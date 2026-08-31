@@ -1,0 +1,19 @@
+/* ==========================================
+   FRONTEND - GLOBAL STYLES BLUEPRINT
+   File: Frontend/src/app/globals.css
+   ========================================== */
+
+/*
+  PURPOSE:
+  - Global CSS styles including Tailwind directives, custom scrollbars, animations, and typography.
+
+  WHAT TO IMPLEMENT LATER:
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  Custom Utility Classes:
+  - .glass-card: Glassmorphism background for dashboard stat cards.
+  - .btn-primary: Jharkhand Green button with hover transition.
+  - .badge-status: Dynamic color pills for Submitted, In-Progress, Solved.
+*/

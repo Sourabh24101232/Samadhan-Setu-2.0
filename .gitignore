@@ -1,0 +1,72 @@
+# ==========================================
+# SAMADHAN-SETU - GITIGNORE
+# ==========================================
+
+# 1. Environment & API Secrets (CRITICAL: Never commit API keys or DB passwords)
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+Backend/*/.env
+Backend/*/.env.local
+Frontend/.env.local
+Frontend/.env*.local
+*.env
+!*.env.example
+
+# 2. Node.js & Dependencies
+node_modules/
+Backend/**/node_modules/
+Frontend/node_modules/
+.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 3. Next.js & Frontend Build Outputs
+Frontend/.next/
+Frontend/out/
+Frontend/build/
+.vercel
+
+# 4. TypeScript & Backend Build Outputs
+dist/
+Backend/**/dist/
+build/
+Backend/**/build/
+*.tsbuildinfo
+next-env.d.ts
+
+# 5. Local Media Uploads & Temporary Directories
+uploads/
+Backend/**/uploads/
+temp/
+tmp/
+*.tmp
+
+# 6. Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# 7. IDE & Editor Specific Folders
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# 8. Testing & Coverage
+coverage/
+.nyc_output/
