@@ -387,3 +387,5 @@ graph LR
 1. Create a `seedData.ts` script to populate realistic Jharkhand societal problems (including an anonymous whistleblower case on toxic industrial runoff in Bokaro).
 2. Rehearse the live 5-step demonstration flow for SIH judges.
 3. Record a 2-minute demo video and prepare presentation slides.
+
+By Tea Lovers 💖
