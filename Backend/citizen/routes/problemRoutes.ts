@@ -16,3 +16,27 @@
   - POST /api/citizen/problems/:id/upvote       -> calls upvoteProblem (public/auth)
   - POST /api/citizen/problems/:id/verify-ground -> calls confirmGroundSolutionResolution
 */
+
+import { Router } from 'express';
+import {
+  submitProblem,
+  getAnonymousProblemTimeline,
+  getMyReportedProblems,
+  getPublicProblemsFeed,
+  getProblemDetailsAndTimeline,
+  upvoteProblem,
+  confirmGroundSolutionResolution
+} from '../controllers/problemController';
+import { verifyToken, optionalVerifyToken } from '../middlewares/authMiddleware';
+
+const router = Router();
+
+router.post('/submit', optionalVerifyToken as any, submitProblem as any);
+router.get('/anonymous-track/:token', getAnonymousProblemTimeline as any);
+router.get('/my-submissions', verifyToken as any, getMyReportedProblems as any);
+router.get('/public-feed', getPublicProblemsFeed as any);
+router.get('/:id', getProblemDetailsAndTimeline as any);
+router.post('/:id/upvote', upvoteProblem as any);
+router.post('/:id/verify-ground', optionalVerifyToken as any, confirmGroundSolutionResolution as any);
+
+export default router;
