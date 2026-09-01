@@ -12,3 +12,19 @@
   - POST /api/university/auth/login    -> calls loginUniversityUser
   - GET  /api/university/auth/profile  -> calls getUniversityProfile (protected)
 */
+
+import { Router } from 'express';
+import {
+  registerUniversityUser,
+  loginUniversityUser,
+  getUniversityProfile
+} from '../controllers/universityAuthController';
+import { verifyUniversityToken } from '../middlewares/authMiddleware';
+
+const router = Router();
+
+router.post('/register', registerUniversityUser);
+router.post('/login', loginUniversityUser);
+router.get('/profile', verifyUniversityToken as any, getUniversityProfile as any);
+
+export default router;
