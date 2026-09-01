@@ -15,18 +15,29 @@ WHAT TO IMPLEMENT LATER:
 """
 
 import os
+import sys
+
+# Ensure local imports work correctly regardless of current working directory
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
+from config import PORT
+from routers.ai_routes import router as ai_router
+
 load_dotenv()
 
 app = FastAPI(
-    title="Samadhan-Setu AI Engine",
-    description="AI Intelligence Microservice for Thematic Domain Classification, R&D Filtering, Disaster SOS, and University Routing",
-    version="1.0.0"
+    title="Samadhan-Setu AI Problem Intelligence Engine",
+    description="AI Microservice for Automated Classification, R&D Filtering, Disaster SOS Detection, and Smart University Routing in Jharkhand",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
+# Enable CORS for Frontend (port 3000) and Backend Microservices (5001-5004)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -35,15 +46,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount AI API Routes
+app.include_router(ai_router)
+
 @app.get("/")
 def root():
     return {
-        "service": "Samadhan-Setu AI Microservice",
+        "service": "Samadhan-Setu AI Intelligence Engine",
         "status": "online",
-        "port": int(os.getenv("PORT", 5005))
+        "port": PORT,
+        "docs": f"http://localhost:{PORT}/docs"
     }
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 5005))
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=PORT, reload=True)
