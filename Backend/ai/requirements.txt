@@ -1,0 +1,16 @@
+# ==========================================
+# AI SERVICE - PYTHON DEPENDENCIES
+# File: Backend/ai/requirements.txt
+# ==========================================
+
+# Web Framework & Server
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+
+# Google Gemini Generative AI SDK
+google-generativeai>=0.4.1
+
+# Data Validation & Utilities
+pydantic>=2.6.0
+python-dotenv>=1.0.1
+requests>=2.31.0

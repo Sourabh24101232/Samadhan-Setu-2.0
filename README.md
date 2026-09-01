@@ -31,7 +31,7 @@ Communities across Jharkhand (villages, panchayats, and urban bodies) face persi
 * Upvote/support mechanism for community validation of critical issues.
 * Real-time tracking of problem status (Submitted $\rightarrow$ Verified $\rightarrow$ Assigned $\rightarrow$ Proposal Submitted $\rightarrow$ In Development $\rightarrow$ Field Tested $\rightarrow$ Deployed).
 
-### 2. AI Problem Intelligence Module
+### 2. AI Problem Intelligence Module (Python / FastAPI)
 * **Thematic Classification:** Automatically classify raw citizen reports into key domains (*Water Resources, Agriculture, Healthcare, Energy, Environment, Urban Development, Rural Livelihoods, Disaster Management*).
 * **R&D vs Civic Grievance Filter:** Differentiate between innovative R&D challenges (e.g. arsenic filtration) and routine municipal complaints (e.g. pothole repair) to prevent clutter.
 * **Smart University Routing:** Intelligently match and route problems to relevant university departments based on subject expertise and geographic proximity.
@@ -61,7 +61,7 @@ Communities across Jharkhand (villages, panchayats, and urban bodies) face persi
 graph TD
     A["Citizens / Whistleblowers / Panchayats"] -->|"1. Submit Problem (Auth / Anonymous + Media/Audio)"| B["Frontend (Next.js + Tailwind)"]
     B -->|"2. API Requests"| C["Backend Services (Node.js + TS)"]
-    C -->|"3. Auto-Classify & Match"| D["AI Engine (Gemini API)"]
+    C -->|"3. Auto-Classify & Match"| D["AI Microservice (Python / FastAPI + Gemini)"]
     C <-->|"4. Store & Fetch Data"| E[("MongoDB Database")]
     
     F["Universities & Students"] <-->|"5. Claim Problems & Submit Proposals"| B
@@ -71,22 +71,22 @@ graph TD
 
 ### Technology Stack
 * **Frontend:** Next.js 14 (App Router), TypeScript, Tailwind CSS, Lucide Icons, Leaflet / Mapbox (District Heatmaps), Recharts.
-* **Backend:** Node.js / Express microservices with TypeScript.
+* **Backend Services:** Node.js / Express microservices with TypeScript (`citizen`, `university`, `industry`, `gov`).
+* **AI Intelligence Microservice:** **Python (FastAPI + Uvicorn)** with Google Gemini 1.5 Flash SDK (`google-generativeai`).
 * **Database:** MongoDB with Mongoose ODM.
-* **AI Layer:** Google Gemini 1.5 Flash API (Categorization, Severity Scoring, Smart Matching).
 * **Storage:** Cloudinary / Multer (Citizen images/videos & Project prototype evidence with EXIF scrubber).
 
 ---
 
 ## 4. Complete Project Folder Structure (With Comment Outlines)
 
-Every file across both **Backend** and **Frontend** has been scaffolded with clear instructional comments, blueprints, and TypeScript type outlines. No raw code has been implemented prematurely.
+Every file across both **Backend** and **Frontend** has been scaffolded with clear instructional comments, blueprints, and TypeScript/Python type outlines. No raw code has been implemented prematurely.
 
 ### 🗄️ Backend Architecture (`/Backend`)
 
 ```
 Backend/
-├── citizen/                                # Citizen problem reporting & tracking (Port 5001)
+├── citizen/                                # Citizen problem reporting & tracking (TypeScript - Port 5001)
 │   ├── config/
 │   │   └── db.ts                           # MongoDB connection setup
 │   ├── models/
@@ -103,7 +103,7 @@ Backend/
 │   ├── server.ts                           # Citizen microservice entry point
 │   └── .env
 │
-├── university/                             # University HEI proposals & milestones (Port 5002)
+├── university/                             # University HEI proposals & milestones (TypeScript - Port 5002)
 │   ├── config/
 │   │   └── db.ts
 │   ├── models/
@@ -122,7 +122,7 @@ Backend/
 │   ├── server.ts                           # University microservice entry point
 │   └── .env
 │
-├── industry/                               # Industry CSR funding & mentorship (Port 5003)
+├── industry/                               # Industry CSR funding & mentorship (TypeScript - Port 5003)
 │   ├── config/
 │   │   └── db.ts
 │   ├── models/
@@ -139,7 +139,7 @@ Backend/
 │   ├── server.ts                           # Industry microservice entry point
 │   └── .env
 │
-├── gov/                                    # Jharkhand Dept of Higher & Technical Education (Port 5004)
+├── gov/                                    # Jharkhand Dept of Higher & Technical Education (TypeScript - Port 5004)
 │   ├── config/
 │   │   └── db.ts
 │   ├── models/
@@ -157,16 +157,16 @@ Backend/
 │   ├── server.ts                           # Government microservice entry point
 │   └── .env
 │
-└── ai/                                     # AI intelligence microservice (Port 5005)
-    ├── config/
-    │   └── aiConfig.ts                     # Gemini API client & prompt templates
-    ├── controllers/
-    │   ├── categorizationController.ts     # Thematic domain classification, R&D filter & disaster detection
-    │   ├── routingController.ts            # University & department recommendation
-    │   └── duplicateController.ts          # Duplicate problem detection in radius
-    ├── routes/
-    │   └── aiRoutes.ts
-    ├── server.ts                           # AI microservice entry point
+└── ai/                                     # AI intelligence microservice (Python / FastAPI - Port 5005)
+    ├── requirements.txt                    # fastapi, uvicorn, google-generativeai, pydantic
+    ├── main.py                             # FastAPI application entry point
+    ├── config.py                           # Gemini API key, prompt templates & settings
+    ├── routers/
+    │   └── ai_routes.py                    # POST /classify, POST /recommend-universities, POST /check-duplicates
+    ├── services/
+    │   ├── categorization.py               # Gemini 1.5 Flash classification, R&D filter & disaster detection
+    │   ├── routing.py                      # Smart Jharkhand university matching
+    │   └── deduplication.py                # Geolocation radius & semantic similarity check
     └── .env
 ```
 
@@ -224,7 +224,7 @@ Frontend/
     │   └── DistrictHeatmap.tsx             # Interactive 24-district Jharkhand map
     │
     └── lib/
-        ├── api.ts                          # Centralized Axios/fetch client for all 5 backends
+        ├── api.ts                          # Centralized Axios/fetch client for all backends
         ├── types.ts                        # TypeScript interfaces (Problem with anonymous fields, Proposal, User)
         └── constants.ts                    # 24 Districts & 11 Thematic Domains lists
 ```
@@ -253,7 +253,7 @@ To make this platform truly effective in real-world Jharkhand conditions, we inc
 | Phase | Feature | What to Demo to Judges |
 | :--- | :--- | :--- |
 | **Demo Step 1** | **Citizen Anonymous Problem Submission** | Citizen toggles **"🛡️ Anonymous Whistleblower Mode"**, submits an issue with photo/voice note without login, and receives a Secret Tracking Key (`ANON-JH-774912`). |
-| **Demo Step 2** | **AI Auto-Categorization & Routing** | System uses AI to classify under **"Water Resources"**, verifies as actionable R&D, sets **"High Priority"**, and routes to **BIT Mesra / IIT ISM Dhanbad**. |
+| **Demo Step 2** | **AI Auto-Categorization & Routing (Python FastAPI)** | System uses Python AI service to classify under **"Water Resources"**, verifies as actionable R&D, sets **"High Priority"**, and routes to **BIT Mesra / IIT ISM Dhanbad**. |
 | **Demo Step 3** | **University Solution Proposal** | A student/faculty team accepts the challenge, submits a proposal with 3 milestone tranches (*"Solar Fluoride Removal Filter"*, ₹1.5L budget). |
 | **Demo Step 4** | **Industry CSR Funding Pledge** | Tata Steel CSR logs in, reviews milestones, and pledges ₹1.5 Lakh grant release across tranches. |
 | **Demo Step 5** | **Gov Analytics & Ground Verification** | Government dashboard displays live district heatmap, approves pilot deployment, and the anonymous citizen verifies the ground fix using their Secret Key. |
@@ -266,49 +266,50 @@ Follow these sequential phases to code the entire platform without feeling overw
 
 ```mermaid
 graph LR
-    P1["Phase 1: DB & Models"] --> P2["Phase 2: AI Engine"]
-    P2 --> P3["Phase 3: Citizen Backend"]
-    P3 --> P4["Phase 4: University Backend"]
-    P4 --> P5["Phase 5: Industry Backend"]
-    P5 --> P6["Phase 6: Gov & Analytics"]
+    P1["Phase 1: DB & Models (TS)"] --> P2["Phase 2: AI Engine (Python FastAPI)"]
+    P2 --> P3["Phase 3: Citizen Backend (TS)"]
+    P3 --> P4["Phase 4: University Backend (TS)"]
+    P4 --> P5["Phase 5: Industry Backend (TS)"]
+    P5 --> P6["Phase 6: Gov & Analytics (TS)"]
     P6 --> P7["Phase 7: Next.js Frontend"]
     P7 --> P8["Phase 8: Demo & Seed Data"]
 ```
 
 ---
 
-### 🔹 Phase 1: Database & Data Models Foundation
-> **Goal:** Set up MongoDB connections, authentication middlewares, and all Mongoose schemas.
-1. Initialize `package.json` and install dependencies (`express`, `mongoose`, `dotenv`, `cors`, `jsonwebtoken`, `bcryptjs`, `ts-node`, `typescript`, `@types/node`, `@types/express`).
-2. Write database connection logic in `config/db.ts` across services using Mongoose.
-3. Code all Mongoose data models with real-world fields:
+### 🔹 Phase 1: Database & Data Models Foundation (✅ Completed)
+> **Goal:** Set up MongoDB connections, authentication middlewares, and all Mongoose schemas in TypeScript.
+1. Initialized `package.json` and `tsconfig.json`.
+2. Implemented `config/db.ts` across services using Mongoose.
+3. Implemented Mongoose data models with real-world fields:
    - `citizen/models/CitizenUser.ts` & `citizen/models/Problem.ts` (with anonymous token, voice notes, emergency flag, ground feedback)
    - `university/models/UniversityUser.ts` & `university/models/SolutionProposal.ts` (with milestone tranches, IP declaration)
    - `industry/models/IndustryUser.ts` & `industry/models/Partnership.ts` (with tranche release schedule & mentorship thread)
    - `gov/models/GovAdmin.ts`
-4. Implement JWT validation in `middlewares/authMiddleware.ts` for each service (with support for unauthenticated anonymous submissions).
-5. **Verification:** Run a simple test script to ensure MongoDB connects and schemas compile cleanly.
+4. Implemented JWT validation in `middlewares/authMiddleware.ts` for each service.
+5. **Verified:** 0 type errors with `npx tsc --noEmit` and all 7 models verified via `testDb.ts`.
 
 ---
 
-### 🔹 Phase 2: AI Problem Intelligence Service (`Backend/ai`)
-> **Goal:** Build the AI engine that auto-categorizes problems, filters non-R&D grievances, detects disaster emergencies, and recommends university matches.
-1. Setup Google Generative AI (`@google/genai` or `@google/generative-ai`) in `ai/config/aiConfig.ts`.
-2. Implement `categorizationController.ts`:
+### 🔹 Phase 2: AI Problem Intelligence Service (`Backend/ai` - Python / FastAPI)
+> **Goal:** Build the dedicated Python AI microservice that auto-categorizes problems, filters non-R&D grievances, detects disaster emergencies, and recommends university matches using Google Gemini 1.5 Flash.
+1. Setup Python virtual environment and install `requirements.txt` (`fastapi`, `uvicorn`, `google-generativeai`, `pydantic`, `python-dotenv`).
+2. Configure `config.py` with `google.generativeai` and `gemini-1.5-flash`.
+3. Implement `services/categorization.py`:
    - Send problem title + description to Gemini with prompt to classify into 11 domains + check if Actionable R&D vs Civic Complaint + detect Disaster Emergency + severity score.
-3. Implement `routingController.ts`:
+4. Implement `services/routing.py`:
    - Match problem domain & district with Jharkhand institutions (BIT Mesra, IIT ISM, Birsa Agri Univ, NIT JSR, AIIMS Deoghar).
-4. Implement `duplicateController.ts`:
-   - Radius & text similarity matching for issues in the same district.
-5. Wire `aiRoutes.ts` and start `ai/server.ts` on Port 5005. Test via Thunder Client / Postman.
+5. Implement `services/deduplication.py`:
+   - Haversine distance formula & text similarity matching for issues in the same district.
+6. Wire `routers/ai_routes.py` with Pydantic request models and start `main.py` on Port 5005 (`uvicorn main:app --port 5005 --reload`). Test via Swagger UI (`http://localhost:5005/docs`).
 
 ---
 
-### 🔹 Phase 3: Citizen Backend Service (`Backend/citizen`)
+### 🔹 Phase 3: Citizen Backend Service (`Backend/citizen` - TypeScript)
 > **Goal:** Enable citizens to sign up, submit problems (authenticated OR anonymous whistleblower), track status by secret key, and provide ground-truth verification.
 1. Code `citizenAuthController.ts` (bcrypt password hashing, JWT token generation, profile lookup).
 2. Code `problemController.ts`:
-   - `submitProblem`: Support both authenticated citizen and anonymous whistleblower (generating `ANON-JH-` passkey, stripping EXIF, zero identity logs).
+   - `submitProblem`: Support both authenticated citizen and anonymous whistleblower (generating `ANON-JH-` passkey, stripping EXIF, zero identity logs, calling Python AI service on Port 5005).
    - `getAnonymousProblemTimeline`: Return status timeline by passkey.
    - `getMyReportedProblems`: Return problems submitted by the logged-in citizen.
    - `confirmGroundSolutionResolution`: Allow citizen (or passkey holder) to verify deployed solution with 1-5 star rating.
@@ -318,7 +319,7 @@ graph LR
 
 ---
 
-### 🔹 Phase 4: University & HEI Backend Service (`Backend/university`)
+### 🔹 Phase 4: University & HEI Backend Service (`Backend/university` - TypeScript)
 > **Goal:** Enable student/faculty teams to browse challenges, claim problems (14-day lock), submit proposals with milestone tranches, and update progress.
 1. Code `universityAuthController.ts` (Registration with institutional details, login).
 2. Code `universityProblemController.ts`:
@@ -333,7 +334,7 @@ graph LR
 
 ---
 
-### 🔹 Phase 5: Industry & CSR Backend Service (`Backend/industry`)
+### 🔹 Phase 5: Industry & CSR Backend Service (`Backend/industry` - TypeScript)
 > **Goal:** Allow corporate CSR wings and startups to sponsor student proposals via milestone tranches and provide technical mentorship.
 1. Code `industryAuthController.ts` (Company registration & login).
 2. Code `partnershipController.ts`:
@@ -345,7 +346,7 @@ graph LR
 
 ---
 
-### 🔹 Phase 6: Government Review & Analytics Service (`Backend/gov`)
+### 🔹 Phase 6: Government Review & Analytics Service (`Backend/gov` - TypeScript)
 > **Goal:** Department admin validation, disaster emergency management, funding approvals, and statewide data analytics.
 1. Code `govAuthController.ts` (Admin login).
 2. Code `govProblemController.ts`:
@@ -359,7 +360,7 @@ graph LR
 
 ---
 
-### 🔹 Phase 7: Next.js Frontend Web Application (`Frontend/`)
+### 🔹 Phase 7: Next.js Frontend Web Application (`Frontend/` - TypeScript)
 > **Goal:** Build intuitive, responsive dashboards for all 4 stakeholders.
 1. Code `lib/constants.ts`, `lib/types.ts`, and `lib/api.ts` (centralized Axios client).
 2. Build global UI in `layout.tsx`, `Navbar.tsx`, `Footer.tsx`, and landing `page.tsx`.

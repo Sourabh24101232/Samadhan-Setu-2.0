@@ -8,7 +8,7 @@
     "dev:university": "ts-node university/server.ts",
     "dev:industry": "ts-node industry/server.ts",
     "dev:gov": "ts-node gov/server.ts",
-    "dev:ai": "ts-node ai/server.ts",
+    "dev:ai": "cd ai && uvicorn main:app --port 5005 --reload",
     "build": "tsc"
   },
   "keywords": [
