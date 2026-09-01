@@ -1,0 +1,15 @@
+// ==========================================
+// FRONTEND - TYPESCRIPT CONFIGURATION BLUEPRINT
+// File: Frontend/tsconfig.json
+// ==========================================
+
+/*
+  PURPOSE:
+  - TypeScript compiler settings for Next.js with path alias `@/*` mapping to `./src/*`.
+
+  SETTINGS TO CONFIGURE LATER:
+  - "target": "es5"
+  - "lib": ["dom", "dom.iterable", "esnext"]
+  - "strict": true
+  - "paths": { "@/*": ["./src/*"] }
+*/
