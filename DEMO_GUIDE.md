@@ -17,6 +17,47 @@
 
 ---
 
+## ⚡ Quick Port Checklist & Startup Commands
+
+To ensure all functionalities, AI auto-detection, and multi-portal databases work smoothly during the demo, run these services in separate terminal windows:
+
+| Terminal | Service | Port | Terminal Startup Command |
+| :--- | :--- | :--- | :--- |
+| **Terminal 1** | **Python AI Engine** | `5005` | `cd Backend/ai` <br/> `python -m uvicorn main:app --port 5005 --reload` |
+| **Terminal 2** | **Citizen API** | `5001` | `cd Backend` <br/> `npx ts-node citizen/server.ts` |
+| **Terminal 3** | **University API** | `5002` | `cd Backend` <br/> `npx ts-node university/server.ts` |
+| **Terminal 4** | **Industry CSR API** | `5003` | `cd Backend` <br/> `npx ts-node industry/server.ts` |
+| **Terminal 5** | **Government API** | `5004` | `cd Backend` <br/> `npx ts-node gov/server.ts` |
+| **Terminal 6** | **Next.js Frontend** | `3000` | `cd Frontend` <br/> `npm run dev` |
+
+---
+
+## ⚠️ Pre-Demo Precautions & Best Practices
+
+1. **MongoDB Running:** Ensure MongoDB is running locally on port `27017` (or your MongoDB Atlas connection string is configured in `.env`).
+2. **One-Time Database Seeding:** Before starting your presentation, run the seed script to reset clean demo data across all 24 districts:
+   ```powershell
+   cd Backend
+   npx ts-node seedData.ts
+   ```
+3. **Check Environment Variables:**
+   * `Backend/.env` should contain:
+     ```env
+     MONGODB_URI=mongodb://localhost:27017/samadhan_setu
+     JWT_SECRET=samadhan_setu_jwt_secret_2026
+     AI_SERVICE_URL=http://localhost:5005/api/ai
+     ```
+   * `Frontend/.env.local` should point to ports `5001`, `5002`, `5003`, `5004`, `5005`.
+4. **Cloudinary Uploads:** If demonstrating photo evidence upload, ensure your Cloudinary upload preset is set to **`Unsigned`**. If unconfigured, the system automatically falls back to secure local previews with zero crashes.
+5. **AI Fallback Safety:** If `GEMINI_API_KEY` is not provided in `Backend/ai/.env`, the AI service will seamlessly and automatically use its built-in rule-based classification engine without throwing errors.
+6. **Pre-Open Browser Tabs:** For a seamless pitch, open these tabs in advance:
+   * Tab 1: `http://localhost:3000` (Main Landing Page)
+   * Tab 2: `http://localhost:3000/citizen` (Citizen & Whistleblower Hub)
+   * Tab 3: `http://localhost:3000/gov` (Statewide 24-District Command Center)
+   * Tab 4: `http://localhost:5005/docs` (FastAPI Swagger Interactive Docs)
+
+---
+
 ## 🔑 Pre-Seeded Test Credentials Cheatsheet
 
 | Role | Identifier / Email | Password | Pre-Seeded Entity |
@@ -48,10 +89,11 @@
    * **Block:** `Kanke`
    * **Village / Panchayat:** `Sukhurhutu Panchayat`
    * **Landmark:** `Near Govt Middle School Well`
-5. Click **"AI Auto-Detect Category"** button to show the Python FastAPI microservice automatically extracting `Water Resources`, `High Severity`, and R&D feasibility.
-6. Click **"Submit Societal Challenge"**:
+5. Click **"Attach Photo Evidence"** to demonstrate the direct file picker and canvas EXIF stripper.
+6. Click **"AI Auto-Detect Category"** button to show the Python FastAPI microservice automatically extracting `Water Resources`, `High Severity`, and R&D feasibility.
+7. Click **"Submit Societal Challenge"**:
    * Show the popup **Secret Passkey Modal** (e.g. `ANON-JH-W7892X`) and click **"Copy Key"**.
-7. Navigate to **"Track Secret Passkey"** (`/citizen/my-problems?passkey=ANON-JH-W7892X`) to show the real-time 6-stage visual timeline without requiring any login!
+8. Navigate to **"Track Secret Passkey"** (`/citizen/my-problems?passkey=ANON-JH-W7892X`) to show the real-time 6-stage visual timeline without requiring any login!
 
 ---
 

@@ -339,22 +339,87 @@ export default function CitizenSubmitProblemPage() {
             />
           </div>
 
-          {/* AI Suggestion Box */}
+          {/* AI Classification Insights Card */}
           {aiSuggestion && (
-            <div className="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 text-xs space-y-1.5 animate-in fade-in">
-              <div className="flex items-center gap-2 font-bold text-emerald-900">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
-                <span>AI Classification Insights</span>
+            <div className="bg-gradient-to-br from-emerald-50 via-teal-50/60 to-indigo-50/50 border-2 border-emerald-300/80 rounded-3xl p-5 shadow-sm space-y-4 animate-in fade-in zoom-in-95">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-extrabold text-slate-900 text-sm">
+                  <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-sm">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <span>AI Problem Intelligence Analysis</span>
+                </div>
+                <span className="text-[11px] font-extrabold bg-emerald-600 text-white px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1">
+                  <span>⚡ Live AI Result</span>
+                </span>
               </div>
-              <p className="text-slate-700">
-                <strong>Recommended Domain:</strong> {aiSuggestion.domainCategory} |{' '}
-                <strong>Severity:</strong> {aiSuggestion.severityLevel} |{' '}
-                <strong>R&D Feasible:</strong> {aiSuggestion.isActionableRnD ? 'Yes (HEI Problem)' : 'Routine Jan Samvad'}
-              </p>
-              {aiSuggestion.suggestedTags && (
-                <div className="flex gap-1 flex-wrap pt-1">
+
+              {/* 3 Prominent Insight Badges */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                {/* 1. Recommended Domain */}
+                <div className="bg-white/90 backdrop-blur-sm border border-emerald-200/80 rounded-2xl p-3 shadow-2xs">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
+                    Detected Domain
+                  </span>
+                  <span className="text-xs font-extrabold text-emerald-800 block mt-0.5 truncate">
+                    🎯 {aiSuggestion.domainCategory || 'Water Resources'}
+                  </span>
+                </div>
+
+                {/* 2. Severity Level */}
+                <div className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-2xl p-3 shadow-2xs">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
+                    Estimated Severity
+                  </span>
+                  <span
+                    className={`text-xs font-extrabold block mt-0.5 ${
+                      aiSuggestion.severityLevel === 'Critical'
+                        ? 'text-red-600'
+                        : aiSuggestion.severityLevel === 'High'
+                        ? 'text-amber-600'
+                        : 'text-emerald-700'
+                    }`}
+                  >
+                    ⚡ {aiSuggestion.severityLevel || 'Medium'} Severity
+                  </span>
+                </div>
+
+                {/* 3. Feasibility Track */}
+                <div className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-2xl p-3 shadow-2xs">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
+                    R&D Feasibility
+                  </span>
+                  <span
+                    className={`text-xs font-extrabold block mt-0.5 ${
+                      aiSuggestion.isActionableRnD !== false
+                        ? 'text-indigo-700'
+                        : 'text-slate-600'
+                    }`}
+                  >
+                    {aiSuggestion.isActionableRnD !== false
+                      ? '🔬 Academic HEI Project'
+                      : '📋 Routine Jan Samvad'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Emergency Banner if Critical */}
+              {aiSuggestion.isDisasterEmergency && (
+                <div className="bg-red-500 text-white rounded-2xl px-3.5 py-2 text-xs font-bold flex items-center gap-2 shadow-sm animate-pulse">
+                  <AlertTriangle className="w-4 h-4 shrink-0" />
+                  <span>🚨 Priority Alert: Life-threatening disaster emergency detected. Fast-tracking to DDMA!</span>
+                </div>
+              )}
+
+              {/* AI Suggested Tags */}
+              {aiSuggestion.suggestedTags && aiSuggestion.suggestedTags.length > 0 && (
+                <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                  <span className="text-[11px] font-bold text-slate-500 mr-1">AI Tags:</span>
                   {aiSuggestion.suggestedTags.map((t: string) => (
-                    <span key={t} className="bg-white text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200 text-[10px] font-medium">
+                    <span
+                      key={t}
+                      className="bg-emerald-100/80 hover:bg-emerald-200 text-emerald-900 px-2.5 py-0.5 rounded-lg text-[11px] font-bold border border-emerald-200 transition-colors"
+                    >
                       #{t}
                     </span>
                   ))}
