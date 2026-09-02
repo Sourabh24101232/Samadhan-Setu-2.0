@@ -39,7 +39,7 @@ function UniversityProposalsContent() {
   // Form State
   const [problemId, setProblemId] = useState(problemIdFromUrl || 'demo-p1');
   const [proposalTitle, setProposalTitle] = useState(
-    problemTitleFromUrl ? `Solution: ${problemTitleFromUrl}` : 'Low-Cost Solar Electro-Coagulation Water Filter'
+    problemTitleFromUrl ? `Solution: ${decodeURIComponent(problemTitleFromUrl)}` : 'Low-Cost Solar Electro-Coagulation Water Filter'
   );
   const [executiveSummary, setExecutiveSummary] = useState(
     'Solar powered mobile filtration unit removing 98% fluoride and heavy metals using electrolysis.'
@@ -50,6 +50,15 @@ function UniversityProposalsContent() {
   const [estimatedBudgetINR, setEstimatedBudgetINR] = useState(150000);
   const [ipDeclaration, setIpDeclaration] = useState('Open_Source_Social_Good');
   const [submitting, setSubmitting] = useState(false);
+
+  React.useEffect(() => {
+    if (problemIdFromUrl) {
+      setProblemId(problemIdFromUrl);
+      if (problemTitleFromUrl) {
+        setProposalTitle(`Solution: ${decodeURIComponent(problemTitleFromUrl)}`);
+      }
+    }
+  }, [problemIdFromUrl, problemTitleFromUrl]);
 
   // Submitted Proposals List State
   const [proposals, setProposals] = useState<any[]>([
@@ -99,24 +108,7 @@ function UniversityProposalsContent() {
         alert('🎉 Solution Proposal submitted to Open CSR Pool! Industry partners can now pledge milestone funding.');
         setProposals([res.proposal, ...proposals]);
       } else {
-        // Mock add for local demo
-        alert('🎉 Proposal Submitted to Open CSR Pool for Industry Grant Pledges!');
-        setProposals([
-          {
-            _id: `prop-${Date.now()}`,
-            proposalTitle,
-            problemTitle: problemTitleFromUrl || 'Societal Problem in Jharkhand',
-            estimatedBudgetINR,
-            ipOwnershipDeclaration: ipDeclaration,
-            status: 'Submitted_To_Open_Pool',
-            milestones: [
-              { num: 1, title: 'Design & Simulation (30%)', status: 'Pending', link: '' },
-              { num: 2, title: 'Working Lab Prototype (40%)', status: 'Pending', link: '' },
-              { num: 3, title: 'Village Pilot Handover (30%)', status: 'Pending', link: '' }
-            ]
-          },
-          ...proposals
-        ]);
+        alert('Proposal submission failed: ' + (res?.message || res?.error || 'Please ensure the University backend service on port 5002 is running.'));
       }
     } catch (err: any) {
       alert('Error submitting proposal: ' + err.message);

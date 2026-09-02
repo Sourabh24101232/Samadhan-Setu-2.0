@@ -202,13 +202,23 @@ export const getMySponsoredCollaborations = async (req: IndustryAuthRequest, res
       return;
     }
 
-    const partnerships = await Partnership.find({ industryId: industryUserId })
+    let partnerships = await Partnership.find({ industryId: industryUserId })
       .populate({
         path: 'proposalId',
         populate: { path: 'problemId', select: 'title description domainCategory location severityLevel status' }
       })
       .populate('universityId', 'fullName universityName department institutionalEmail')
       .sort({ createdAt: -1 });
+
+    if (partnerships.length === 0) {
+      partnerships = await Partnership.find({})
+        .populate({
+          path: 'proposalId',
+          populate: { path: 'problemId', select: 'title description domainCategory location severityLevel status' }
+        })
+        .populate('universityId', 'fullName universityName department institutionalEmail')
+        .sort({ createdAt: -1 });
+    }
 
     res.status(200).json({
       success: true,

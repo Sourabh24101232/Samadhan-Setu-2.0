@@ -203,7 +203,7 @@ export default function IndustryMarketplacePage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200 px-3 py-1 rounded-lg">
-                    {prop.domainCategory || 'Innovation'}
+                    {prop.domainCategory || prop.problemId?.domainCategory || 'Innovation'}
                   </span>
                   <span className="text-xs font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">
                     ₹{prop.estimatedBudgetINR} Requested
@@ -221,7 +221,7 @@ export default function IndustryMarketplacePage() {
                 <div className="space-y-1 text-xs text-slate-500 pt-2 border-t border-slate-100">
                   <div className="flex items-center gap-1.5 text-indigo-700 font-semibold">
                     <GraduationCap className="w-3.5 h-3.5" />
-                    <span>{prop.universityName || 'HEI Innovation Lab'}</span>
+                    <span>{prop.universityName || prop.universityId?.universityName || prop.universityId?.fullName || 'BIT Mesra, Ranchi'}</span>
                   </div>
                   <div className="text-[11px] text-slate-400">
                     IP: <strong>{prop.ipOwnershipDeclaration}</strong>

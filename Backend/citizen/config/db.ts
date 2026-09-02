@@ -21,7 +21,7 @@ dotenv.config();
 
 export const connectDB = async (): Promise<void> => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/samadhan_setu_citizen';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/samadhan_setu';
     await mongoose.connect(mongoUri);
     console.log('✅ [Citizen Service] MongoDB Connected Successfully');
   } catch (error) {

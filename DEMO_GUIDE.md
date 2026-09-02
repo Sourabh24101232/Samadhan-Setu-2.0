@@ -71,6 +71,38 @@ To ensure all functionalities, AI auto-detection, and multi-portal databases wor
 
 ---
 
+## 🔄 End-to-End Inter-Authority Complaint Lifecycle & Status Flow
+
+Here is the exact progression of a challenge moving across portals during the demo:
+
+```
+[1. Citizen Portal]  ──(Submits Challenge)──►  Status: 'Submitted'
+         │
+         ▼
+[2. Government Desk] ──(Validates R&D)──────►  Status: 'Verified'
+         │
+         ▼
+[3. University Hub]  ──(14-Day Claim Lock)──►  Status: 'Assigned to University'
+         │           ──(Submits Proposal)───►  Status: 'Proposal Submitted'
+         ▼
+[4. Industry CSR]    ──(Pledges CSR Grant)──►  Status: 'In Progress'
+         │           ──(Pilot Deployment)───►  Status: 'Testing'
+         ▼
+[5. Citizen Tracker] ──(5-Star Ground Sign)─►  Status: 'Resolved' 🎉
+```
+
+| Authority Portal | URL | Trigger Action | Database Status | Next Destination |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. Citizen / Whistleblower** | `/citizen/submit` | Fills form + Clicks *"Submit Societal Challenge"* | `Submitted` | Visible on Gov Review Desk |
+| **2. Government Officer** | `/gov/verify` | Clicks *"Validate & Assign HEI"* | `Verified` | Open for University Teams |
+| **3. University Innovators** | `/university` | Clicks *"Claim Challenge (14-Day Lock)"* | `Assigned to University` | Form student team |
+| **3b. University Innovators** | `/university/proposals` | Fills 3-tranche budget + Clicks *"Submit Proposal"* | `Proposal Submitted` | Visible in CSR Pool |
+| **4. Corporate CSR Partner** | `/industry` | Clicks *"Pledge CSR Grant & Mentorship"* | `In Progress` | University begins R&D |
+| **4b. Gov Field Approval** | `/gov/verify` | Clicks *"Authorize Field Pilot Sanction"* | `Testing` | Ready for ground testing |
+| **5. Citizen Ground-Truth** | `/citizen/my-problems` | Enters passkey + Clicks *"Confirm Resolution (1-5★)"* | `Resolved` | 100% Completed |
+
+---
+
 ## 🎬 5-Step Hackathon Demonstration Script
 
 ### 📍 Step 1: Citizen Experience & 🛡️ Whistleblower Protection
@@ -78,42 +110,70 @@ To ensure all functionalities, AI auto-detection, and multi-portal databases wor
 2. Click **"Report a Problem"** (`/citizen/submit`).
 3. Toggle **"🛡️ Submit Anonymously (Whistleblower Mode)"**:
    * *Highlight to Judges:* Point out that IP addresses and phone numbers are completely zero-logged, and client-side photo EXIF metadata is stripped to protect rural citizens reporting illegal mining or industrial pollution.
-4. **Copy & Paste this Ready-to-Use Demo Problem:**
-   * **Title (English):** `Severe Fluoride and Arsenic Contamination in Rural Drinking Wells`
-   * **Description (English):**
-     > *Over 8 villages in Kanke block reporting dental and skeletal fluorosis among school children due to high fluoride levels (6.8 ppm vs 1.5 ppm safe limit) in deep borewells. Need solar-powered electro-coagulation or low-cost filtration unit for the community.*
-   * *(Alternative Hindi for AI translation demo):*
-     > **Title:** `हमारे गाँव के कुएं में जहरीला फ्लोराइड और आर्सेनिक का पानी`  
-     > **Description:** `कांके प्रखंड के 8 गांवों में बच्चों के दांत पीले और हड्डियां कमजोर हो रही हैं। पानी में 6.8 ppm फ्लोराइड है। कृपया सौर ऊर्जा से चलने वाले वाटर फिल्टर तकनीक से समाधान निकालें।`
-   * **District:** `Ranchi`
-   * **Block:** `Kanke`
-   * **Village / Panchayat:** `Sukhurhutu Panchayat`
-   * **Landmark:** `Near Govt Middle School Well`
+4. **Copy & Paste any of these Ready-to-Use Demo Problems:**
+
+   * **🌿 Demo Problem 1 (Water Resources - Whistleblower Mode):**
+     * **Title:** `Severe Fluoride and Arsenic Contamination in Rural Drinking Wells`
+     * **Description:** `Over 8 villages in Kanke block reporting dental and skeletal fluorosis among school children due to high fluoride levels (6.8 ppm vs 1.5 ppm safe limit) in deep borewells. Need solar-powered electro-coagulation or low-cost filtration unit for the community.`
+     * **District:** `Ranchi` | **Block:** `Kanke` | **Village:** `Sukhurhutu Panchayat` | **Landmark:** `Near Govt Middle School Well`
+     * **Expected AI Auto-Detect:** `Water Resources` • `High Severity` • `Actionable R&D: Yes`
+
+   * **🌾 Demo Problem 2 (Agriculture & Tribal Livelihood):**
+     * **Title:** `High Post-Harvest Paddy Spoilage and Aflatoxin Fungal Contamination`
+     * **Description:** `Tribal farmers suffering 35% crop loss in storage due to high humidity and lack of portable moisture testing. Requesting low-cost IoT capacitive moisture sensor and solar drying cabinet for Mahila Samitis.`
+     * **District:** `Khunti` | **Block:** `Murhu` | **Village:** `Torpa Gram` | **Landmark:** `Near Krishi Sahayata Kendra`
+     * **Expected AI Auto-Detect:** `Agriculture` • `Medium Severity` • `Actionable R&D: Yes`
+
+   * **🚨 Demo Problem 3 (Disaster Management - Fast-Track SOS Alert):**
+     * **Title:** `Toxic Carbon Monoxide Leak & Subterranean Coal Fire Subsidence`
+     * **Description:** `Underground mine fire breakout near Jharia settlement causing sudden ground fissures and toxic carbon monoxide blowout. Immediate structural evacuation and rapid sensor deployment needed.`
+     * **District:** `Dhanbad` | **Block:** `Jharia` | **Village:** `Bhowra Colliery Ward 4` | **Landmark:** `Near Mining Gate 3`
+     * **Expected AI Auto-Detect:** `Disaster Management` • `Critical Severity` • `🚨 Emergency SOS Fast-Track`
+
+   * **🏥 Demo Problem 4 (Healthcare & Diagnostics):**
+     * **Title:** `Non-Invasive Severe Anemia & Sickle Cell Screening Device for Tribal Mothers`
+     * **Description:** `Over 60% of pregnant tribal women in remote forested blocks suffer from acute anemia without access to pathology labs. Requesting a battery-operated non-invasive spectroscopic hemoglobin monitor for Anganwadi workers.`
+     * **District:** `West Singhbhum` | **Block:** `Chaibasa` | **Village:** `Jhinkpani Panchayat` | **Landmark:** `Anganwadi Center 2`
+     * **Expected AI Auto-Detect:** `Healthcare` • `High Severity` • `Actionable R&D: Yes`
+
+   * **⚡ Demo Problem 5 (Clean Energy):**
+     * **Title:** `Off-Grid Solar Micro-Grid and Compact Grain Milling Unit`
+     * **Description:** `Un-electrified hill village faces 8km travel for manual diesel milling. Need decentralized 5kW solar PV micro-grid with DC micro-milling machine operated by self-help groups.`
+     * **District:** `Gumla` | **Block:** `Raidih` | **Village:** `Kochedega Panchayat` | **Landmark:** `SHG Community Center`
+     * **Expected AI Auto-Detect:** `Energy` • `Medium Severity` • `Actionable R&D: Yes`
+
+   * **📋 Demo Problem 6 (Jan Samvad Redirection Test Case - Municipal):**
+     * **Title:** `Broken street light and single pothole on market road`
+     * **Description:** `The municipal bulb near the vegetable market has stopped working for 2 days. Please send an electrician to replace the bulb.`
+     * **District:** `Hazaribagh` | **Block:** `Sadar` | **Village:** `Ward 7`
+     * **Expected AI Auto-Detect:** `Urban Development` • `Low Severity` • `Actionable R&D: False (Redirect to Jan Samvad)`
+
 5. Click **"Attach Photo Evidence"** to demonstrate the direct file picker and canvas EXIF stripper.
-6. Click **"AI Auto-Detect Category"** button to show the Python FastAPI microservice automatically extracting `Water Resources`, `High Severity`, and R&D feasibility.
-7. Click **"Submit Societal Challenge"**:
+6. Click **"AI Auto-Detect Category"** button to show the Python AI engine automatically extracting the domain, severity, and tags.
+7. Click **"Submit Societal Challenge to Innovation Grid"**:
    * Show the popup **Secret Passkey Modal** (e.g. `ANON-JH-W7892X`) and click **"Copy Key"**.
 8. Navigate to **"Track Secret Passkey"** (`/citizen/my-problems?passkey=ANON-JH-W7892X`) to show the real-time 6-stage visual timeline without requiring any login!
 
 ---
 
-### 📍 Step 2: Python AI Problem Intelligence Engine
-1. Open the interactive API documentation at **`http://localhost:5005/docs`**.
-2. Demonstrate **`POST /api/ai/classify`**:
-   * Show how an incoming Hindi text (*"हमारे गाँव में कुएं के पानी में फ्लोराइड की मात्रा बहुत अधिक है"*) is automatically translated, classified into **"Water Resources"**, and flagged as an innovative R&D challenge (`is_actionable_rnd: true`).
-3. Demonstrate **`POST /api/ai/recommend-universities`**:
-   * Show geographic Haversine distance calculation and department matching ranking **BIT Mesra (Ranchi)** as Rank #1.
+### 📍 Step 2: Government Review Desk & Validation
+1. Go to **`http://localhost:3000/gov/verify`**.
+2. Find the newly submitted problem in the **Incoming Challenges Verification Queue**.
+3. Click **"Validate & Assign HEI"**:
+   * The challenge is validated as an authentic Academic R&D problem, and its status updates to **`Verified`**.
+4. *(Optional Jan Samvad Demo)*: For municipal issues (like Problem 6), click **"Jan Samvad"** to redirect routine complaints directly to the Jharkhand Jan Samvad portal (`https://jansamvad.jharkhand.gov.in`).
 
 ---
 
 ### 📍 Step 3: University Hub & 14-Day Claim Locking (NEP 2020)
 1. Go to **`http://localhost:3000/university`**.
-2. Show open challenges matching academic departments (Civil/Environmental, Agri, Mining, IoT).
+2. Filter by domain or find the verified challenge.
 3. Demonstrate the **"Claim Challenge (14-Day Lock)"** button:
    * *Highlight to Judges:* Emphasize that the 14-day lock gives student teams time to formulate multidisciplinary proposals without fear of other teams swooping in, while preventing dead hoarding.
-4. Open the **Proposal & Milestone Builder** (`/university/proposals`):
+4. Click **"Create Proposal"** to open the **Proposal & Milestone Builder** (`/university/proposals`):
    * Show the 3-stage milestone release schedule (30% Design, 40% Working Prototype, 30% Pilot Deployment).
    * Show the transparent **IP Ownership Declaration** (*Open Source Social Good*).
+   * Click **"Submit Solution Proposal"** ➜ Problem status updates to **`Proposal Submitted`**.
 
 ---
 
@@ -121,7 +181,8 @@ To ensure all functionalities, AI auto-detection, and multi-portal databases wor
 1. Go to **`http://localhost:3000/industry`**.
 2. Browse open university proposals filterable by budget and domain category.
 3. Click **"Pledge CSR Grant & Mentorship"**:
-   * Show how corporate CSR wings pledge funding linked to specific milestone stages.
+   * Enter the pledge amount (e.g. `₹1,50,000`) and confirm.
+   * Problem status updates to **`In Progress`**!
 4. Navigate to **"My Sponsored Collaborations"** (`/industry/collaborations`):
    * Show the **UTR-verified tranche payment roadmap** (`UTR-TATA-2026-001`).
    * Demonstrate the **Direct Technical Mentorship Chat Thread** where corporate engineers advise students on materials (e.g. *"Use 316L stainless steel electrodes"*).
@@ -129,16 +190,15 @@ To ensure all functionalities, AI auto-detection, and multi-portal databases wor
 
 ---
 
-### 📍 Step 5: Government Command Center & Citizen Ground-Truth Rating
-1. Navigate to **`http://localhost:3000/gov`**.
-2. Showcase the **Statewide Societal Innovation Command Center**:
+### 📍 Step 5: Government Pilot Sanction & Citizen Ground Verification
+1. Navigate to **`http://localhost:3000/gov`**:
    * **Real-time KPI Counters:** Total challenges reported, active student teams, CSR funds mobilized, and deployed solutions.
-   * **24-District Interactive Heatmap:** Click on different districts (*Ranchi, Dhanbad, Bokaro, Khunti, Palamu*) to view localized problem densities and resolution counts.
-   * **🚨 Disaster Emergency SOS Alert Queue:** Life-threatening emergencies (e.g. Jharia mine fire toxic leaks) fast-tracked for immediate DDMA dispatch.
-3. Open **Problem Review Desk** (`/gov/verify`):
-   * Show filtering out non-R&D complaints by redirecting routine potholes to *Jharkhand Jan Samvad*.
-   * Show granting the **Official Field Pilot Sanction Order** (`JH-PILOT-2026-XXXX`).
-4. **Closing Impact Loop:** Return to the Citizen tracker (`/citizen/my-problems?passkey=ANON-JH-W7892X`) and click **"Confirm Resolution"** to submit a **5/5 ⭐ Citizen Ground-Truth Rating**, officially closing the innovation loop!
+   * **24-District Interactive Heatmap:** Click on different districts (*Ranchi, Dhanbad, Bokaro, Khunti, Palamu*) to view localized problem densities.
+   * **🚨 Disaster Emergency SOS Alert Queue:** Life-threatening emergencies fast-tracked for immediate DDMA dispatch.
+2. In `/gov/verify`, click **"Authorize Field Pilot Sanction"** ➜ Grants sanction order `JH-PILOT-2026-XXXX` and updates status to **`Testing`**.
+3. **Closing the Impact Loop:** Return to the Citizen tracker (`/citizen/my-problems?passkey=ANON-JH-W7892X`):
+   * The visual timeline shows Stage 5 reached!
+   * Click **"Confirm Ground Resolution"** to submit a **5/5 ⭐ Citizen Ground-Truth Rating**, officially locking the problem as **`Resolved`**!
 
 ---
 

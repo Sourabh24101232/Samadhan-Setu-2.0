@@ -35,37 +35,40 @@ def _fallback_classification(title: str, description: str, district: str) -> dic
     """Intelligent rule-based fallback when Gemini API key is not configured."""
     text = (title + " " + description).lower()
     
+    def match_any(keywords):
+        return any(re.search(r'\b' + re.escape(w) + r'\b', text, re.IGNORECASE) if ' ' not in w else w in text for w in keywords)
+
     # 1. Disaster Emergency Check
-    is_disaster = any(w in text for w in ["flood", "subsidence", "landslide", "collapse", "toxic gas", "gas leak", "mine fire", "dam breach", "aag", "baadh", "dhasan"])
-    
+    is_disaster = match_any(["flood", "subsidence", "landslide", "collapse", "toxic gas", "gas leak", "mine fire", "dam breach", "aag", "baadh", "dhasan", "fissure", "blowout"])
+
     # 2. Domain Classification
     domain = "Water Resources"
-    if any(w in text for w in ["water", "pani", "arsenic", "fluoride", "borewell", "contamination", "filter", "jal", "peene ka pani", "nal"]):
-        domain = "Water Resources"
-    elif any(w in text for w in ["agri", "farmer", "kisan", "crop", "fasal", "soil", "mitti", "irrigation", "drought", "sukha", "pesticide"]):
-        domain = "Agriculture"
-    elif any(w in text for w in ["health", "swasthya", "hospital", "disease", "bimari", "doctor", "medicine", "malnutrition", "epidemic"]):
+    if match_any(["health", "swasthya", "hospital", "disease", "bimari", "doctor", "medicine", "malnutrition", "epidemic", "anemia", "sickle cell", "hemoglobin", "blood", "maternal", "screening"]):
         domain = "Healthcare"
-    elif any(w in text for w in ["mine", "mining", "coal", "blast", "subsidence", "disaster", "flood", "earthquake", "hazard"]):
+    elif match_any(["mine", "mining", "coal", "blast", "subsidence", "disaster", "flood", "earthquake", "hazard", "gas leak", "mine fire", "colliery"]):
         domain = "Disaster Management"
-    elif any(w in text for w in ["solar", "electricity", "bijli", "energy", "power", "grid", "urja", "battery"]):
+    elif match_any(["solar", "electricity", "bijli", "energy", "power", "grid", "urja", "battery", "pv", "photovoltaic", "microgrid", "micro-grid"]):
         domain = "Energy"
-    elif any(w in text for w in ["forest", "pollution", "plastic", "waste", "river", "environment", "pradushan", "jungle"]):
+    elif match_any(["agri", "agriculture", "farmer", "kisan", "crop", "fasal", "soil", "mitti", "irrigation", "drought", "sukha", "pesticide", "paddy", "grain", "spoilage", "aflatoxin"]):
+        domain = "Agriculture"
+    elif match_any(["water", "pani", "arsenic", "fluoride", "borewell", "contamination", "filter", "jal", "peene ka pani", "drinking water"]):
+        domain = "Water Resources"
+    elif match_any(["forest", "pollution", "plastic", "waste", "river", "environment", "pradushan", "jungle", "toxic waste", "dumping"]):
         domain = "Environment"
-    elif any(w in text for w in ["livelihood", "tribal", "employment", "rojgar", "artisan", "handicraft", "gramin", "pashupalan"]):
+    elif match_any(["livelihood", "tribal", "employment", "rojgar", "artisan", "handicraft", "gramin", "pashupalan", "shg", "mahila samiti", "de-husker"]):
         domain = "Rural Livelihoods"
-    elif any(w in text for w in ["school", "college", "education", "student", "shiksha", "vidyalaya", "digital literacy"]):
+    elif match_any(["school", "college", "education", "student", "shiksha", "vidyalaya", "digital literacy", "dropout", "classroom"]):
         domain = "Education"
-    elif any(w in text for w in ["traffic", "drainage", "sewage", "urban", "smart city", "waste management", "kachra"]):
+    elif match_any(["traffic", "drainage", "sewage", "urban", "smart city", "waste management", "kachra", "bulb", "street light", "pothole", "streetlight"]):
         domain = "Urban Development"
-    elif any(w in text for w in ["disabled", "wheelchair", "divyang", "accessibility", "blind", "braille"]):
+    elif match_any(["disabled", "wheelchair", "divyang", "accessibility", "blind", "braille", "deaf"]):
         domain = "Accessibility"
-    elif any(w in text for w in ["panchayat", "scheme", "ration", "yojana", "certificate", "governance"]):
+    elif match_any(["panchayat", "scheme", "ration", "yojana", "certificate", "governance", "corruption", "whistleblower"]):
         domain = "Public Administration"
 
     # 3. Actionability & Severity
-    is_rnd = not any(w in text for w in ["sweeping", "bulb kharab", "pothole on gali", "dustbin missing", "meter reading"])
-    severity = "Critical" if is_disaster else ("High" if any(w in text for w in ["poison", "death", "severe", "arsenic", "crisis"]) else "Medium")
+    is_rnd = not match_any(["sweeping", "bulb", "street light", "streetlight", "pothole", "dustbin", "meter reading", "kachra safai", "garbage bin"])
+    severity = "Critical" if is_disaster else ("High" if match_any(["poison", "death", "severe", "arsenic", "crisis", "anemia", "fluoride", "epidemic", "blowout"]) else "Medium")
     
     tags = [domain.lower().replace(" ", "-"), district.lower(), "jharkhand-societal-challenge"]
     

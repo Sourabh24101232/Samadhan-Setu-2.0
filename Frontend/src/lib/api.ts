@@ -46,12 +46,13 @@ const AI_API = process.env.NEXT_PUBLIC_AI_API_URL || 'http://localhost:5005/api/
 // --- Generic Helper ---
 async function request(url: string, options: RequestInit = {}) {
   try {
+    const { headers, ...restOptions } = options;
     const res = await fetch(url, {
+      ...restOptions,
       headers: {
         'Content-Type': 'application/json',
-        ...(options.headers || {})
-      },
-      ...options
+        ...(headers || {})
+      }
     });
     return await res.json();
   } catch (error: any) {

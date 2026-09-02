@@ -101,6 +101,16 @@ export const createSolutionProposal = async (req: UniversityAuthRequest, res: Re
       }
     ];
 
+    let validIpDecl = 'Open_Source_Social_Good';
+    const rawIp = String(ipOwnershipDeclaration || '');
+    if (rawIp.includes('Joint') || rawIp.includes('Patent')) {
+      validIpDecl = 'Joint_Student_Faculty_Patent';
+    } else if (rawIp.includes('Incubation') || rawIp.includes('TBI') || rawIp.includes('University')) {
+      validIpDecl = 'University_Incubation_IP';
+    } else if (rawIp.includes('Industry') || rawIp.includes('Transfer') || rawIp.includes('Sponsored')) {
+      validIpDecl = 'Industry_Sponsored_Transfer';
+    }
+
     const proposal = await SolutionProposal.create({
       problemId,
       universityId: universityUserId,
@@ -117,7 +127,7 @@ export const createSolutionProposal = async (req: UniversityAuthRequest, res: Re
         mentorApprovalStatus: 'Approved'
       },
       milestoneTranches: defaultMilestones,
-      ipOwnershipDeclaration,
+      ipOwnershipDeclaration: validIpDecl,
       prototypeMedia: [],
       status: 'Submitted_To_Open_Pool'
     });

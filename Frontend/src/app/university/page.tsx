@@ -42,7 +42,8 @@ export default function UniversityPortalPage() {
   const fetchProblems = async () => {
     setLoading(true);
     try {
-      const res = await citizenApi.getPublicFeed('?limit=20');
+      const query = selectedDomain !== 'All' ? `?domain=${encodeURIComponent(selectedDomain)}&limit=50` : '?limit=50';
+      const res = await citizenApi.getPublicFeed(query);
       if (res && res.success && res.problems) {
         setProblems(res.problems);
       } else {

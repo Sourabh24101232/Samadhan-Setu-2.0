@@ -137,9 +137,22 @@ export default function CitizenSubmitProblemPage() {
         district: district || 'Ranchi'
       });
       if (res && res.success && res.data) {
-        setAiSuggestion(res.data);
-        if (res.data.domainCategory) setDomainCategory(res.data.domainCategory);
-        if (res.data.isDisasterEmergency !== undefined) setIsDisasterEmergency(res.data.isDisasterEmergency);
+        const domain = res.data.domainCategory || res.data.domain_category;
+        const severity = res.data.severityLevel || res.data.severity_level;
+        const isEmergency = res.data.isDisasterEmergency ?? res.data.is_disaster_emergency;
+        const isRnD = res.data.isActionableRnD ?? res.data.is_actionable_rnd;
+        const tags = res.data.suggestedTags || res.data.ai_tags || [];
+
+        setAiSuggestion({
+          domainCategory: domain,
+          severityLevel: severity,
+          isDisasterEmergency: isEmergency,
+          isActionableRnD: isRnD,
+          suggestedTags: tags
+        });
+
+        if (domain) setDomainCategory(domain);
+        if (isEmergency !== undefined) setIsDisasterEmergency(isEmergency);
       }
     } catch (err) {
       console.error('Error during AI classification:', err);
@@ -159,16 +172,16 @@ export default function CitizenSubmitProblemPage() {
     setSubmitting(true);
     try {
       const payload = {
-        title,
-        description,
+        title: title.trim(),
+        description: description.trim(),
         isAnonymous,
         domainCategory,
         isDisasterEmergency,
         location: {
-          district,
-          block: block || undefined,
-          villageOrPanchayat: village || undefined,
-          landmark: landmark || undefined
+          district: district || 'Ranchi',
+          block: block?.trim() || undefined,
+          villageOrPanchayat: village?.trim() || undefined,
+          landmark: landmark?.trim() || undefined
         },
         mediaAttachments: photoUrl
           ? [{ mediaType: 'image', url: photoUrl, isExifStripped: isAnonymous }]
@@ -178,8 +191,8 @@ export default function CitizenSubmitProblemPage() {
 
       const res = await citizenApi.submitProblem(payload);
       if (res && res.success) {
-        if (res.isAnonymous && res.anonymousTrackingToken) {
-          setGeneratedPasskey(res.anonymousTrackingToken);
+        if (res.anonymousTrackingToken || isAnonymous || res.isAnonymous || res.problem?.anonymousTrackingToken) {
+          setGeneratedPasskey(res.anonymousTrackingToken || res.problem?.anonymousTrackingToken);
         } else {
           alert('Societal challenge submitted successfully! Academic teams have been notified.');
           router.push('/citizen');

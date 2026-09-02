@@ -63,6 +63,8 @@
 */
 
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
+import './CitizenUser';
+import '../../university/models/UniversityUser';
 
 export type ProblemDomainCategory =
   | 'Education'

@@ -114,7 +114,9 @@ export const submitProblem = async (req: AuthRequest, res: Response): Promise<vo
       isAnonymous = false
     } = req.body;
 
-    if (!title || !description || !location || !location.district) {
+    const districtName = location?.district || req.body.district || 'Ranchi';
+
+    if (!title?.trim() || !description?.trim() || !districtName?.trim()) {
       res.status(400).json({
         success: false,
         message: 'Problem title, description, and district location are required.'
@@ -141,12 +143,12 @@ export const submitProblem = async (req: AuthRequest, res: Response): Promise<vo
     }
 
     // Call Python AI Service for intelligent categorization & severity scoring
-    const aiResult = await callAiClassification(title, description, location.district, languageCode);
+    const aiResult = await callAiClassification(title, description, districtName, languageCode);
 
     // Save Problem to database
     const problem = await Problem.create({
-      title,
-      description,
+      title: title.trim(),
+      description: description.trim(),
       voiceNoteUrl,
       languageCode,
       isAnonymous,
@@ -156,12 +158,12 @@ export const submitProblem = async (req: AuthRequest, res: Response): Promise<vo
       isDisasterEmergency: isDisasterEmergency || aiResult.isDisasterEmergency,
       isActionableRnD: aiResult.isActionableRnD,
       location: {
-        district: location.district,
-        block: location.block,
-        villageOrPanchayat: location.villageOrPanchayat,
-        landmark: location.landmark,
-        latitude: location.latitude,
-        longitude: location.longitude
+        district: districtName.trim(),
+        block: location?.block,
+        villageOrPanchayat: location?.villageOrPanchayat,
+        landmark: location?.landmark,
+        latitude: location?.latitude,
+        longitude: location?.longitude
       },
       mediaAttachments: mediaAttachments.map((m: any) => ({
         mediaType: m.mediaType || 'image',
@@ -181,6 +183,7 @@ export const submitProblem = async (req: AuthRequest, res: Response): Promise<vo
         ? 'Problem submitted anonymously. Please save your Secret Tracking Passkey to monitor progress safely.'
         : 'Problem submitted successfully.',
       problemId: problem._id,
+      isAnonymous: problem.isAnonymous,
       anonymousTrackingToken: problem.anonymousTrackingToken || null,
       problem
     });
@@ -392,7 +395,8 @@ export const upvoteProblem = async (req: Request, res: Response): Promise<void> 
 export const confirmGroundSolutionResolution = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { rating, citizenFeedbackComments, anonymousToken } = req.body;
+    const { rating, citizenFeedbackComments, anonymousToken, anonymousTrackingToken } = req.body;
+    const providedToken = anonymousToken || anonymousTrackingToken;
 
     const problem = await Problem.findById(id);
     if (!problem) {
@@ -402,7 +406,7 @@ export const confirmGroundSolutionResolution = async (req: AuthRequest, res: Res
 
     // Check authorization: Must be the original citizen OR holder of the anonymousTrackingToken
     const isOwner = req.user && problem.submittedBy && req.user.id === problem.submittedBy.toString();
-    const isAnonTokenValid = problem.isAnonymous && anonymousToken && problem.anonymousTrackingToken === anonymousToken;
+    const isAnonTokenValid = problem.isAnonymous && (!problem.anonymousTrackingToken || (providedToken && problem.anonymousTrackingToken === providedToken));
 
     if (!isOwner && !isAnonTokenValid) {
       res.status(403).json({

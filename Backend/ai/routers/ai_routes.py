@@ -72,7 +72,14 @@ async def api_classify_problem(req: ClassifyRequest):
             district=req.district,
             language=req.language or "hi"
         )
-        return {"success": True, "data": result}
+        # Ensure both camelCase and snake_case fields are present for all clients
+        enriched = dict(result)
+        enriched["domainCategory"] = result.get("domain_category")
+        enriched["isActionableRnD"] = result.get("is_actionable_rnd")
+        enriched["isDisasterEmergency"] = result.get("is_disaster_emergency")
+        enriched["severityLevel"] = result.get("severity_level")
+        enriched["suggestedTags"] = result.get("ai_tags", [])
+        return {"success": True, "data": enriched}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Classification failed: {str(e)}")
 

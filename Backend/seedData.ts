@@ -21,6 +21,9 @@ import { IndustryUser } from './industry/models/IndustryUser';
 import { Partnership } from './industry/models/Partnership';
 import { GovAdmin } from './gov/models/GovAdmin';
 import { JHARKHAND_24_DISTRICTS } from './gov/controllers/analyticsController';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/samadhan_setu';
 

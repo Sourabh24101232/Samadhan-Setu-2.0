@@ -233,7 +233,10 @@ const SolutionProposalSchema: Schema<ISolutionProposal> = new Schema(
         'Open_Source_Social_Good',
         'Joint_Student_Faculty_Patent',
         'University_Incubation_IP',
-        'Industry_Sponsored_Transfer'
+        'Industry_Sponsored_Transfer',
+        'University TBI Incubation IP',
+        'Open Source / Social Good (Public Domain)',
+        'Joint Student-Faculty Patent'
       ],
       default: 'Open_Source_Social_Good'
     },
