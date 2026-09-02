@@ -37,9 +37,21 @@
 2. Click **"Report a Problem"** (`/citizen/submit`).
 3. Toggle **"🛡️ Submit Anonymously (Whistleblower Mode)"**:
    * *Highlight to Judges:* Point out that IP addresses and phone numbers are completely zero-logged, and client-side photo EXIF metadata is stripped to protect rural citizens reporting illegal mining or industrial pollution.
-4. Fill in a challenge description (or click **"AI Auto-Detect Category"** to demonstrate live categorization via FastAPI).
-5. On submission, show the generated **Secret Passkey** (e.g. `ANON-JH-W7892X`).
-6. Navigate to **"Track Secret Passkey"** (`/citizen/my-problems?passkey=ANON-JH-W7892X`) to demonstrate the live 6-stage visual timeline.
+4. **Copy & Paste this Ready-to-Use Demo Problem:**
+   * **Title (English):** `Severe Fluoride and Arsenic Contamination in Rural Drinking Wells`
+   * **Description (English):**
+     > *Over 8 villages in Kanke block reporting dental and skeletal fluorosis among school children due to high fluoride levels (6.8 ppm vs 1.5 ppm safe limit) in deep borewells. Need solar-powered electro-coagulation or low-cost filtration unit for the community.*
+   * *(Alternative Hindi for AI translation demo):*
+     > **Title:** `हमारे गाँव के कुएं में जहरीला फ्लोराइड और आर्सेनिक का पानी`  
+     > **Description:** `कांके प्रखंड के 8 गांवों में बच्चों के दांत पीले और हड्डियां कमजोर हो रही हैं। पानी में 6.8 ppm फ्लोराइड है। कृपया सौर ऊर्जा से चलने वाले वाटर फिल्टर तकनीक से समाधान निकालें।`
+   * **District:** `Ranchi`
+   * **Block:** `Kanke`
+   * **Village / Panchayat:** `Sukhurhutu Panchayat`
+   * **Landmark:** `Near Govt Middle School Well`
+5. Click **"AI Auto-Detect Category"** button to show the Python FastAPI microservice automatically extracting `Water Resources`, `High Severity`, and R&D feasibility.
+6. Click **"Submit Societal Challenge"**:
+   * Show the popup **Secret Passkey Modal** (e.g. `ANON-JH-W7892X`) and click **"Copy Key"**.
+7. Navigate to **"Track Secret Passkey"** (`/citizen/my-problems?passkey=ANON-JH-W7892X`) to show the real-time 6-stage visual timeline without requiring any login!
 
 ---
 
