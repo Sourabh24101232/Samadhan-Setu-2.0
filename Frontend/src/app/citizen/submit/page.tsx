@@ -30,7 +30,9 @@ import {
   Copy,
   CheckCircle2,
   ArrowRight,
-  Info
+  Info,
+  Upload,
+  X
 } from 'lucide-react';
 import { JHARKHAND_DISTRICTS, THEMATIC_DOMAINS } from '../../../lib/constants';
 import { citizenApi, aiApi } from '../../../lib/api';
@@ -50,6 +52,8 @@ export default function CitizenSubmitProblemPage() {
   const [isDisasterEmergency, setIsDisasterEmergency] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
   const [voiceNoteUrl, setVoiceNoteUrl] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // UI & Loading States
   const [isClassifying, setIsClassifying] = useState(false);
@@ -58,6 +62,69 @@ export default function CitizenSubmitProblemPage() {
   const [generatedPasskey, setGeneratedPasskey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+
+  // Direct Photo File Picker with Client-Side EXIF Stripper
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    try {
+      // 1. Strip EXIF metadata via HTML5 Canvas (Anonymous Whistleblower Protection)
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+
+      const cleanedBlob = await new Promise<Blob>((resolve, reject) => {
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx?.drawImage(img, 0, 0);
+          canvas.toBlob(
+            (blob) => {
+              if (blob) resolve(blob);
+              else reject(new Error('Canvas conversion failed'));
+            },
+            'image/jpeg',
+            0.88
+          );
+        };
+        img.onerror = reject;
+        img.src = URL.createObjectURL(file);
+      });
+
+      const localPreview = URL.createObjectURL(cleanedBlob);
+      setImagePreview(localPreview);
+
+      // 2. Upload to Cloudinary if configured in .env
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'samadhan_setu_preset';
+
+      if (cloudName && cloudName !== 'your_cloud_name') {
+        const formData = new FormData();
+        formData.append('file', cleanedBlob);
+        formData.append('upload_preset', uploadPreset);
+
+        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await uploadRes.json();
+        if (data.secure_url) {
+          setPhotoUrl(data.secure_url);
+        } else {
+          setPhotoUrl(localPreview);
+        }
+      } else {
+        setPhotoUrl(localPreview);
+      }
+    } catch (err: any) {
+      console.error('Photo upload error:', err);
+      alert('Error processing photo: ' + err.message);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   // Live AI Classification Trigger
   const handleAiClassify = async () => {
@@ -369,19 +436,59 @@ export default function CitizenSubmitProblemPage() {
 
           {/* Media Attachments & Voice Note */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            {/* Photo URL */}
+            {/* Direct Photo File Picker with EXIF Stripper */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                <Camera className="w-4 h-4 text-slate-500" />
-                <span>Photo Evidence URL (EXIF Stripped)</span>
+              <label className="block text-xs font-semibold text-slate-700 flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Camera className="w-4 h-4 text-emerald-600" />
+                  <span>Attach Photo Evidence</span>
+                </span>
+                <span className="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full font-bold">
+                  🛡️ Auto EXIF Stripped
+                </span>
               </label>
-              <input
-                type="url"
-                placeholder="https://example.com/photo.jpg"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500"
-              />
+
+              {!imagePreview ? (
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-4 cursor-pointer bg-slate-50 hover:bg-emerald-50/50 transition-all">
+                  <Upload className="w-6 h-6 text-slate-400 mb-1" />
+                  <span className="text-xs font-bold text-slate-700">
+                    {uploadingImage ? 'Stripping EXIF & Uploading...' : 'Click to Upload / Take Photo'}
+                  </span>
+                  <span className="text-[11px] text-slate-400 mt-0.5">
+                    JPG, PNG, WebP (Camera & GPS metadata removed)
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    disabled={uploadingImage}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </label>
+              ) : (
+                <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 p-2 flex items-center gap-3">
+                  <img
+                    src={imagePreview}
+                    alt="Evidence Preview"
+                    className="w-16 h-16 object-cover rounded-xl border border-slate-200"
+                  />
+                  <div className="flex-grow text-xs">
+                    <span className="font-bold text-emerald-700 block">✓ Photo Attached</span>
+                    <span className="text-[10px] text-slate-500">EXIF metadata sanitized</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImagePreview(null);
+                      setPhotoUrl('');
+                    }}
+                    className="p-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-full transition-colors"
+                    title="Remove Photo"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Voice Note Simulation */}
