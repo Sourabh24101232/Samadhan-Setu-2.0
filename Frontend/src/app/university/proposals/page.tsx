@@ -30,11 +30,13 @@ import {
   Link as LinkIcon
 } from 'lucide-react';
 import { universityApi } from '../../../lib/api';
+import OfficialLetterModal, { LetterData } from '../../../components/OfficialLetterModal';
 
 function UniversityProposalsContent() {
   const searchParams = useSearchParams();
   const problemIdFromUrl = searchParams.get('problemId') || '';
   const problemTitleFromUrl = searchParams.get('title') || '';
+  const [selectedLetter, setSelectedLetter] = useState<{ isOpen: boolean; data: LetterData } | null>(null);
 
   // Form State
   const [problemId, setProblemId] = useState(problemIdFromUrl || 'demo-p1');
@@ -281,8 +283,26 @@ function UniversityProposalsContent() {
                     ))}
                   </div>
 
-                  {/* Upload Deliverable Link */}
-                  <div className="pt-2">
+                  {/* Upload Deliverable Link & View Endorsement */}
+                  <div className="pt-2 space-y-2">
+                    <button
+                      onClick={() =>
+                        setSelectedLetter({
+                          isOpen: true,
+                          data: {
+                            title: prop.proposalTitle,
+                            universityName: 'BIT Mesra, Ranchi',
+                            mentorName: 'Dr. Ananya Sen',
+                            studentLead: 'Amit Kumar (Lead Student Innovator)',
+                            refNo: `BIT/RND/NEP2020/${prop._id}`
+                          }
+                        })
+                      }
+                      className="w-full flex items-center justify-center gap-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-indigo-50 hover:text-indigo-900 py-2 rounded-xl transition-colors shadow-2xs"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>📄 View NEP 2020 Institutional Endorsement Letter</span>
+                    </button>
                     <button
                       onClick={() => alert('Deliverable upload dialog opened. Link your research paper, CAD schema, or YouTube demo.')}
                       className="w-full flex items-center justify-center gap-1 text-xs font-bold text-indigo-700 bg-white border border-indigo-200 hover:bg-indigo-50 py-2 rounded-xl transition-colors"
@@ -297,6 +317,14 @@ function UniversityProposalsContent() {
           </div>
         </div>
       </div>
+
+      {/* Official University NEP 2020 Endorsement Letter Modal */}
+      <OfficialLetterModal
+        isOpen={!!selectedLetter?.isOpen}
+        onClose={() => setSelectedLetter(null)}
+        type="univ_endorsement"
+        data={selectedLetter?.data}
+      />
     </div>
   );
 }

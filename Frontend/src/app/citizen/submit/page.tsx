@@ -32,7 +32,8 @@ import {
   ArrowRight,
   Info,
   Upload,
-  X
+  X,
+  ExternalLink
 } from 'lucide-react';
 import { JHARKHAND_DISTRICTS, THEMATIC_DOMAINS } from '../../../lib/constants';
 import { citizenApi, aiApi } from '../../../lib/api';
@@ -54,6 +55,8 @@ export default function CitizenSubmitProblemPage() {
   const [voiceNoteUrl, setVoiceNoteUrl] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [liveCoordinates, setLiveCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [fetchingGps, setFetchingGps] = useState(false);
 
   // UI & Loading States
   const [isClassifying, setIsClassifying] = useState(false);
@@ -62,6 +65,30 @@ export default function CitizenSubmitProblemPage() {
   const [generatedPasskey, setGeneratedPasskey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+
+  // Optional Live GPS Location Fetcher
+  const handleGetLiveLocation = () => {
+    if (typeof window === 'undefined' || !navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    setFetchingGps(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLiveCoordinates({
+          latitude: parseFloat(pos.coords.latitude.toFixed(6)),
+          longitude: parseFloat(pos.coords.longitude.toFixed(6))
+        });
+        setFetchingGps(false);
+      },
+      (err) => {
+        console.warn('Geolocation error:', err);
+        alert('Could not access live GPS location. Please ensure location permissions are allowed in your browser.');
+        setFetchingGps(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
 
   // Direct Photo File Picker with Client-Side EXIF Stripper
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,7 +208,9 @@ export default function CitizenSubmitProblemPage() {
           district: district || 'Ranchi',
           block: block?.trim() || undefined,
           villageOrPanchayat: village?.trim() || undefined,
-          landmark: landmark?.trim() || undefined
+          landmark: landmark?.trim() || undefined,
+          latitude: liveCoordinates?.latitude,
+          longitude: liveCoordinates?.longitude
         },
         mediaAttachments: photoUrl
           ? [{ mediaType: 'image', url: photoUrl, isExifStripped: isAnonymous }]
@@ -510,6 +539,60 @@ export default function CitizenSubmitProblemPage() {
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500"
               />
             </div>
+          </div>
+
+          {/* Optional Live GPS Location Button & Badge */}
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-all">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 shadow-2xs">
+                <MapPin className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-bold text-xs text-slate-800 flex items-center gap-1.5">
+                  <span>Exact Live GPS Coordinates</span>
+                  <span className="text-[10px] text-slate-400 font-semibold uppercase bg-white border border-slate-200 px-1.5 py-0.2 rounded">
+                    Optional
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Pinpoint exact ground coordinates to aid university R&D field visits & drone surveys
+                </p>
+              </div>
+            </div>
+
+            {!liveCoordinates ? (
+              <button
+                type="button"
+                disabled={fetchingGps}
+                onClick={handleGetLiveLocation}
+                className="w-full sm:w-auto px-4 py-2.5 bg-white hover:bg-emerald-50 active:scale-98 border border-emerald-300 text-emerald-700 font-bold text-xs rounded-xl shadow-2xs transition-all flex items-center justify-center gap-2 shrink-0"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                <span>{fetchingGps ? 'Acquiring GPS...' : '📍 Share Live Location'}</span>
+              </button>
+            ) : (
+              <div className="flex flex-wrap items-center gap-2 bg-emerald-100 text-emerald-950 border border-emerald-300 px-3.5 py-2 rounded-xl text-xs font-mono font-bold shadow-2xs animate-in fade-in">
+                <span>📍 {liveCoordinates.latitude}°, {liveCoordinates.longitude}°</span>
+                <a
+                  href={`https://www.google.com/maps?q=${liveCoordinates.latitude},${liveCoordinates.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 bg-white hover:bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-300 text-[11px] font-sans font-bold transition-all shadow-2xs active:scale-95"
+                  title="Verify your live location on Google Maps"
+                >
+                  <span>🗺️ Check on Map</span>
+                  <ExternalLink className="w-3 h-3 text-emerald-600" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setLiveCoordinates(null)}
+                  className="p-1 hover:bg-emerald-200 text-emerald-800 rounded-full transition-colors"
+                  title="Remove Coordinates"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Media Attachments & Voice Note */}

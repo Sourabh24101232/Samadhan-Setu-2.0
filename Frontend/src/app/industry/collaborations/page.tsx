@@ -16,9 +16,11 @@ import {
   GraduationCap,
   Award,
   FileCheck,
-  RefreshCw
+  RefreshCw,
+  FileText
 } from 'lucide-react';
 import { industryApi } from '../../../lib/api';
+import OfficialLetterModal, { LetterData } from '../../../components/OfficialLetterModal';
 
 export default function IndustryCollaborationsPage() {
   const [collaborations, setCollaborations] = useState<any[]>([]);
@@ -26,6 +28,7 @@ export default function IndustryCollaborationsPage() {
   const [loading, setLoading] = useState(true);
   const [newMsg, setNewMsg] = useState('');
   const [sendingMsg, setSendingMsg] = useState(false);
+  const [selectedLetter, setSelectedLetter] = useState<{ isOpen: boolean; data: LetterData } | null>(null);
 
   // Fallback initial messages if empty
   const defaultMessages = [
@@ -230,9 +233,30 @@ export default function IndustryCollaborationsPage() {
               <span className="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
                 Active Grant: ₹{pledgedFunding.toLocaleString()}
               </span>
-              <span className="text-xs font-semibold text-slate-500">
-                MOU Status: <strong className="text-emerald-700">MOU Signed & Active</strong>
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-slate-500">
+                  MOU Status: <strong className="text-emerald-700">MOU Signed & Active</strong>
+                </span>
+                <button
+                  onClick={() =>
+                    setSelectedLetter({
+                      isOpen: true,
+                      data: {
+                        title: proposalTitle,
+                        universityName: universityName,
+                        industryName: 'Tata Steel CSR Foundation, Jamshedpur',
+                        grantAmount: pledgedFunding,
+                        utrNo: 'UTR-TATA-2026-001',
+                        refNo: 'TSF/CSR/2026/GRANT-089'
+                      }
+                    })
+                  }
+                  className="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold px-3 py-1 rounded-xl text-xs shadow-2xs transition-colors"
+                >
+                  <FileText className="w-3.5 h-3.5 text-amber-700" />
+                  <span>📄 View Form CSR-1 Grant Letter</span>
+                </button>
+              </div>
             </div>
 
             <div>
@@ -368,6 +392,14 @@ export default function IndustryCollaborationsPage() {
           </form>
         </div>
       </div>
+
+      {/* Official Corporate CSR Grant Letter Modal */}
+      <OfficialLetterModal
+        isOpen={!!selectedLetter?.isOpen}
+        onClose={() => setSelectedLetter(null)}
+        type="csr_award"
+        data={selectedLetter?.data}
+      />
     </div>
   );
 }

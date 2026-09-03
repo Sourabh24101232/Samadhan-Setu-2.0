@@ -28,11 +28,13 @@ import {
   MapPin,
   Sparkles,
   GraduationCap,
-  Award
+  Award,
+  FileText
 } from 'lucide-react';
 import StatusTimeline from '../../../components/StatusTimeline';
 import { ProblemItem } from '../../../lib/types';
 import { citizenApi } from '../../../lib/api';
+import OfficialLetterModal, { LetterData } from '../../../components/OfficialLetterModal';
 
 function MyProblemsContent() {
   const searchParams = useSearchParams();
@@ -43,6 +45,7 @@ function MyProblemsContent() {
   const [trackedProblem, setTrackedProblem] = useState<ProblemItem | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [selectedLetter, setSelectedLetter] = useState<{ isOpen: boolean; data: LetterData } | null>(null);
 
   // Ground Verification Modal States
   const [showRatingModal, setShowRatingModal] = useState(false);
@@ -244,14 +247,36 @@ function MyProblemsContent() {
                   </p>
                 </div>
 
-                <button
-                  onClick={() => setShowRatingModal(true)}
-                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-sm shrink-0 transition-all"
-                >
-                  {trackedProblem.citizenGroundFeedback?.isResolvedConfirmedByCitizen
-                    ? 'Update 1-5★ Rating'
-                    : 'Confirm Resolution (1-5★)'}
-                </button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {trackedProblem.citizenGroundFeedback?.isResolvedConfirmedByCitizen && (
+                    <button
+                      onClick={() =>
+                        setSelectedLetter({
+                          isOpen: true,
+                          data: {
+                            title: trackedProblem.title,
+                            village: trackedProblem.location?.villageOrPanchayat || 'Sukhurhutu Panchayat',
+                            district: trackedProblem.location?.district || 'Ranchi',
+                            universityName: trackedProblem.assignedUniversityId?.universityName || 'BIT Mesra, Ranchi',
+                            refNo: `GP/SUKH/2026/COMP-${trackedProblem._id.slice(-4)}`
+                          }
+                        })
+                      }
+                      className="bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-300 font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-1.5"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>📄 View Panchayat Completion Certificate</span>
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setShowRatingModal(true)}
+                    className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-sm shrink-0 transition-all"
+                  >
+                    {trackedProblem.citizenGroundFeedback?.isResolvedConfirmedByCitizen
+                      ? 'Update 1-5★ Rating'
+                      : 'Confirm Resolution (1-5★)'}
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -341,6 +366,14 @@ function MyProblemsContent() {
           </div>
         </div>
       )}
+
+      {/* Official Gram Panchayat Completion Certificate Modal */}
+      <OfficialLetterModal
+        isOpen={!!selectedLetter?.isOpen}
+        onClose={() => setSelectedLetter(null)}
+        type="panchayat_completion"
+        data={selectedLetter?.data}
+      />
     </div>
   );
 }

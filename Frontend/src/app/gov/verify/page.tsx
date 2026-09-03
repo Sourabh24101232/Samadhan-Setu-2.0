@@ -32,10 +32,12 @@ import {
   Award
 } from 'lucide-react';
 import { govApi, citizenApi } from '../../../lib/api';
+import OfficialLetterModal, { LetterData } from '../../../components/OfficialLetterModal';
 
 export default function GovVerifyPage() {
   const [problems, setProblems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedLetter, setSelectedLetter] = useState<{ isOpen: boolean; data: LetterData } | null>(null);
 
   const fetchQueue = async () => {
     setLoading(true);
@@ -99,16 +101,24 @@ export default function GovVerifyPage() {
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('gov_token') || 'demo_token' : 'demo_token';
       const res = await govApi.verifyProblem(problemId, { isActionableRnD: false }, token);
-      if (res && res.success) {
-        alert('⚠️ Problem marked as Routine Municipal Grievance and redirected to Jharkhand Jan Samvad portal (https://jansamvad.jharkhand.gov.in).');
-        setProblems((prev) =>
-          prev.map((p) => (p._id === problemId ? { ...p, status: 'Rejected' } : p))
-        );
-      } else {
-        alert('Redirection failed: ' + (res?.message || 'Please ensure the Government service on port 5004 is running.'));
+      
+      // Update local problem status
+      setProblems((prev) =>
+        prev.map((p) => (p._id === problemId ? { ...p, status: 'Rejected' } : p))
+      );
+
+      // Open official Jharkhand Jan Samvad portal in a new tab
+      if (typeof window !== 'undefined') {
+        window.open('https://cm-jansamvad.jharkhand.gov.in', '_blank', 'noopener,noreferrer');
       }
+
+      alert('🏛️ Routine Civic Grievance Handover:\nProblem logged as Non-R&D. Redirecting to the official Jharkhand CM Jan Samvad portal in a new tab!');
     } catch (err: any) {
-      alert('Error redirecting problem: ' + err.message);
+      // Fallback open even if offline
+      if (typeof window !== 'undefined') {
+        window.open('https://cm-jansamvad.jharkhand.gov.in', '_blank', 'noopener,noreferrer');
+      }
+      alert('Redirecting to official Jharkhand Jan Samvad portal (https://cm-jansamvad.jharkhand.gov.in)');
     }
   };
 
@@ -208,10 +218,31 @@ export default function GovVerifyPage() {
                     <span>Authorize Field Pilot Sanction</span>
                   </button>
                 ) : p.status === 'Testing' ? (
-                  <span className="flex items-center gap-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-3 py-1.5 rounded-xl text-xs">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Field Pilot Sanctioned (In Testing)</span>
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-3 py-1.5 rounded-xl text-xs">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                      <span>Field Pilot Sanctioned (In Testing)</span>
+                    </span>
+                    <button
+                      onClick={() =>
+                        setSelectedLetter({
+                          isOpen: true,
+                          data: {
+                            title: p.title,
+                            district: p.location?.district || 'Ranchi',
+                            block: p.location?.block || 'Kanke',
+                            village: p.location?.villageOrPanchayat || 'Sukhurhutu Panchayat',
+                            universityName: p.assignedUniversityId?.universityName || 'BIT Mesra, Ranchi',
+                            refNo: p.pilotAuthorizationNumber || 'JH/DHTE/2026/SANCTION-8841'
+                          }
+                        })
+                      }
+                      className="flex items-center gap-1 bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold px-3 py-1.5 rounded-xl text-xs shadow-2xs transition-colors"
+                    >
+                      <FileCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>View G.O. Order</span>
+                    </button>
+                  </div>
                 ) : p.status === 'Verified' ? (
                   <span className="flex items-center gap-1.5 bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold px-3 py-1.5 rounded-xl text-xs">
                     <CheckCircle2 className="w-4 h-4 text-indigo-600" />
@@ -223,10 +254,31 @@ export default function GovVerifyPage() {
                     <span>HEI R&D Proposal Active</span>
                   </span>
                 ) : p.status === 'Resolved' ? (
-                  <span className="flex items-center gap-1.5 bg-teal-100 text-teal-800 border border-teal-300 font-bold px-3 py-1.5 rounded-xl text-xs">
-                    <Award className="w-4 h-4 text-teal-600" />
-                    <span>Resolved & Ground Verified ★</span>
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1.5 bg-teal-100 text-teal-800 border border-teal-300 font-bold px-3 py-1.5 rounded-xl text-xs">
+                      <Award className="w-4 h-4 text-teal-600" />
+                      <span>Resolved & Ground Verified ★</span>
+                    </span>
+                    <button
+                      onClick={() =>
+                        setSelectedLetter({
+                          isOpen: true,
+                          data: {
+                            title: p.title,
+                            district: p.location?.district || 'Ranchi',
+                            block: p.location?.block || 'Kanke',
+                            village: p.location?.villageOrPanchayat || 'Sukhurhutu Panchayat',
+                            universityName: p.assignedUniversityId?.universityName || 'BIT Mesra, Ranchi',
+                            refNo: p.pilotAuthorizationNumber || 'JH/DHTE/2026/SANCTION-8841'
+                          }
+                        })
+                      }
+                      className="flex items-center gap-1 bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold px-3 py-1.5 rounded-xl text-xs shadow-2xs transition-colors"
+                    >
+                      <FileCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>View Sanction Order</span>
+                    </button>
+                  </div>
                 ) : p.isRoutineComplaint ? (
                   <button
                     onClick={() => handleRedirectJanSamvad(p._id)}
@@ -257,6 +309,14 @@ export default function GovVerifyPage() {
           ))}
         </div>
       </div>
+
+      {/* Official Government Sanction Letter Modal */}
+      <OfficialLetterModal
+        isOpen={!!selectedLetter?.isOpen}
+        onClose={() => setSelectedLetter(null)}
+        type="gov_sanction"
+        data={selectedLetter?.data}
+      />
     </div>
   );
 }

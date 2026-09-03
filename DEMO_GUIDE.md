@@ -110,42 +110,86 @@ Here is the exact progression of a challenge moving across portals during the de
 2. Click **"Report a Problem"** (`/citizen/submit`).
 3. Toggle **"🛡️ Submit Anonymously (Whistleblower Mode)"**:
    * *Highlight to Judges:* Point out that IP addresses and phone numbers are completely zero-logged, and client-side photo EXIF metadata is stripped to protect rural citizens reporting illegal mining or industrial pollution.
-4. **Copy & Paste any of these Ready-to-Use Demo Problems:**
+4. **Copy & Paste any of these 10 Ready-to-Use Demo Problems (English & Hindi):**
 
-   * **🌿 Demo Problem 1 (Water Resources - Whistleblower Mode):**
+   * **🌿 Demo Problem 1 (Water Resources - Whistleblower Mode | Ranchi):**
      * **Title:** `Severe Fluoride and Arsenic Contamination in Rural Drinking Wells`
+     * **Hindi Title:** `ग्रामीण पेयजल कुओं में अत्यधिक फ्लोराइड और आर्सेनिक का प्रदूषण`
      * **Description:** `Over 8 villages in Kanke block reporting dental and skeletal fluorosis among school children due to high fluoride levels (6.8 ppm vs 1.5 ppm safe limit) in deep borewells. Need solar-powered electro-coagulation or low-cost filtration unit for the community.`
+     * **Hindi Description:** `कांके प्रखंड के 8 गांवों में बच्चों के दांत पीले और हड्डियां कमजोर हो रही हैं। पानी में 6.8 ppm फ्लोराइड है। कृपया सौर ऊर्जा से चलने वाले वाटर फिल्टर तकनीक से समाधान निकालें।`
      * **District:** `Ranchi` | **Block:** `Kanke` | **Village:** `Sukhurhutu Panchayat` | **Landmark:** `Near Govt Middle School Well`
      * **Expected AI Auto-Detect:** `Water Resources` • `High Severity` • `Actionable R&D: Yes`
 
-   * **🌾 Demo Problem 2 (Agriculture & Tribal Livelihood):**
+   * **🌾 Demo Problem 2 (Agriculture & Tribal Post-Harvest | Khunti):**
      * **Title:** `High Post-Harvest Paddy Spoilage and Aflatoxin Fungal Contamination`
+     * **Hindi Title:** `कटाई के बाद धान का भारी नुकसान और फफूंद संक्रमण`
      * **Description:** `Tribal farmers suffering 35% crop loss in storage due to high humidity and lack of portable moisture testing. Requesting low-cost IoT capacitive moisture sensor and solar drying cabinet for Mahila Samitis.`
+     * **Hindi Description:** `खूंटी के मुरहू में नमी और धूप न मिलने से धान में फंगस लग जाता है और 35% फसल सड़ जाती है। महिला स्वयं सहायता समूहों के लिए सौर सुखाने वाले चैंबर और सेंसर की आवश्यकता है।`
      * **District:** `Khunti` | **Block:** `Murhu` | **Village:** `Torpa Gram` | **Landmark:** `Near Krishi Sahayata Kendra`
      * **Expected AI Auto-Detect:** `Agriculture` • `Medium Severity` • `Actionable R&D: Yes`
 
-   * **🚨 Demo Problem 3 (Disaster Management - Fast-Track SOS Alert):**
+   * **🚨 Demo Problem 3 (Disaster Management - Fast-Track SOS Alert | Dhanbad):**
      * **Title:** `Toxic Carbon Monoxide Leak & Subterranean Coal Fire Subsidence`
+     * **Hindi Title:** `भूमिगत कोयला खदान से जहरीली कार्बन मोनोऑक्साइड गैस का रिसाव`
      * **Description:** `Underground mine fire breakout near Jharia settlement causing sudden ground fissures and toxic carbon monoxide blowout. Immediate structural evacuation and rapid sensor deployment needed.`
+     * **Hindi Description:** `झरिया में जमीन फटने से जहरीली गैस निकल रही है जिससे बस्ती के 500 घरों में सांस लेना मुश्किल हो गया है। तत्काल आपातकालीन सेंसर और बचाव की जरूरत है।`
      * **District:** `Dhanbad` | **Block:** `Jharia` | **Village:** `Bhowra Colliery Ward 4` | **Landmark:** `Near Mining Gate 3`
      * **Expected AI Auto-Detect:** `Disaster Management` • `Critical Severity` • `🚨 Emergency SOS Fast-Track`
 
-   * **🏥 Demo Problem 4 (Healthcare & Diagnostics):**
+   * **🏥 Demo Problem 4 (Healthcare & Remote Diagnostics | West Singhbhum):**
      * **Title:** `Non-Invasive Severe Anemia & Sickle Cell Screening Device for Tribal Mothers`
+     * **Hindi Title:** `आदिवासी माताओं के लिए गैर-आक्रामक एनीमिया और सिकल सेल स्क्रीनिंग उपकरण`
      * **Description:** `Over 60% of pregnant tribal women in remote forested blocks suffer from acute anemia without access to pathology labs. Requesting a battery-operated non-invasive spectroscopic hemoglobin monitor for Anganwadi workers.`
+     * **Hindi Description:** `दूरदराज के जंगली क्षेत्रों में गर्भवती महिलाओं में गंभीर खून की कमी है। बिना सुई चुभाए काम करने वाले पोर्टेबल हीमोग्लोबिन जांच उपकरण की मांग है।`
      * **District:** `West Singhbhum` | **Block:** `Chaibasa` | **Village:** `Jhinkpani Panchayat` | **Landmark:** `Anganwadi Center 2`
      * **Expected AI Auto-Detect:** `Healthcare` • `High Severity` • `Actionable R&D: Yes`
 
-   * **⚡ Demo Problem 5 (Clean Energy):**
+   * **⚡ Demo Problem 5 (Clean Energy & Micro-Grids | Gumla):**
      * **Title:** `Off-Grid Solar Micro-Grid and Compact Grain Milling Unit`
+     * **Hindi Title:** `ऑफ-ग्रिड सोलर माइक्रो-ग्रिड और मिनी अनाज पिसाई चक्की`
      * **Description:** `Un-electrified hill village faces 8km travel for manual diesel milling. Need decentralized 5kW solar PV micro-grid with DC micro-milling machine operated by self-help groups.`
+     * **Hindi Description:** `गुमला के पहाड़ी गांव में बिजली न होने से महिलाओं को 8 किमी दूर डीजल चक्की जाना पड़ता है। 5kW सौर ऊर्जा चालित मिनी चक्की की आवश्यकता है।`
      * **District:** `Gumla` | **Block:** `Raidih` | **Village:** `Kochedega Panchayat` | **Landmark:** `SHG Community Center`
      * **Expected AI Auto-Detect:** `Energy` • `Medium Severity` • `Actionable R&D: Yes`
 
-   * **📋 Demo Problem 6 (Jan Samvad Redirection Test Case - Municipal):**
+   * **🏭 Demo Problem 6 (Environment - Whistleblower Mode | Bokaro):**
+     * **Title:** `Untreated Heavy Metal Chemical Effluent Discharge into Garga River Basin`
+     * **Hindi Title:** `गरगा नदी में बिना उपचारित रासायनिक जहरीले कचरे का बहाव`
+     * **Description:** `Dark acidic industrial effluent being released into Garga river culvert late night, turning water black and wiping out aquatic life. Need automated IoT water pH/turbidity monitoring probe with tamper-proof cloud alerts.`
+     * **Hindi Description:** `बोकारो के चास में रात के समय औद्योगिक कारखानों का काला जहरीला पानी नदी में बहाया जा रहा है। नदी का पानी जहरीला हो गया है। स्वचालित प्रदूषण मॉनिटरिंग की जरूरत है।`
+     * **District:** `Bokaro` | **Block:** `Chas` | **Village:** `Kandra Industrial Area` | **Landmark:** `Garga River Bridge Culvert`
+     * **Expected AI Auto-Detect:** `Environment` • `High Severity` • `Actionable R&D: Yes`
+
+   * **📚 Demo Problem 7 (Education & Rural EdTech | Simdega):**
+     * **Title:** `Offline Solar-Powered Mesh Intranet Learning Pod for Forest Schools`
+     * **Hindi Title:** `जंगल के स्कूलों के लिए सौर-ऊर्जा संचालित ऑफलाइन डिजिटल लर्निंग पॉड`
+     * **Description:** `Zero cellular and broadband internet connectivity in dense forest tribal primary school. Requesting offline localized Raspberry Pi Wi-Fi mesh intranet server with preloaded NCERT tribal language modules powered by a mini solar panel.`
+     * **Hindi Description:** `सिमडेगा के घने जंगल में स्थित प्राथमिक विद्यालय में इंटरनेट नहीं है। सौर ऊर्जा से चलने वाले ऑफलाइन लोकल सर्वर की मांग है ताकि बच्चे डिजिटल पढ़ाई कर सकें।`
+     * **District:** `Simdega` | **Block:** `Kolebira` | **Village:** `Tangar Panchayat` | **Landmark:** `Forest Primary School`
+     * **Expected AI Auto-Detect:** `Education` • `Medium Severity` • `Actionable R&D: Yes`
+
+   * **♻️ Demo Problem 8 (Waste Management & Geopolymers | East Singhbhum):**
+     * **Title:** `Upcycling Blast Furnace Slag Waste into Permeable Geopolymer Paving Bricks`
+     * **Hindi Title:** `कारखाने के धातु कचरे (स्लैग) से पानी सोखने वाली पेवर ईंटों का निर्माण`
+     * **Description:** `Massive accumulation of granulated blast furnace slag creating environmental particulate hazard. Proposing formulation of alkali-activated geopolymer interlocking tiles that allow rainwater percolation and reduce landfill burden.`
+     * **Hindi Description:** `जमशेदपुर के आसपास कारखानों के स्लैग कचरे से प्रदूषण हो रहा है। इस कचरे से मजबूत और वर्षा जल सोखने वाली ईंटें बनाने के लिए तकनीकी शोध की आवश्यकता है।`
+     * **District:** `East Singhbhum` | **Block:** `Golmuri-cum-Jugsalai` | **Village:** `Bistupur Outer Sector` | **Landmark:** `Industrial Waste Yard Gate`
+     * **Expected AI Auto-Detect:** `Waste Management` • `Medium Severity` • `Actionable R&D: Yes`
+
+   * **💧 Demo Problem 9 (Smart Irrigation & Drought Resilience | Palamu):**
+     * **Title:** `Automated Solar Low-Pressure Drip Kit for Hillside Tribal Cultivation`
+     * **Hindi Title:** `पलामू के सूखाग्रस्त क्षेत्रों के लिए स्वचालित सौर ड्रिप सिंचाई प्रणाली`
+     * **Description:** `Chronic severe groundwater depletion in Palamu leading to seasonal migration. Requesting gravity-fed soil moisture-automated solar drip irrigation system saving 70% water for pulse and vegetable crops.`
+     * **Hindi Description:** `पलामू के सूखाग्रस्त इलाके में पानी की भारी कमी है। मिट्टी की नमी सेंसर से अपने आप चालू होने वाली सस्ती सौर ड्रिप सिंचाई किट की जरूरत है।`
+     * **District:** `Palamu` | **Block:** `Medininagar` | **Village:** `Chhatarpur Agro Hub` | **Landmark:** `Kisan Demonstration Field`
+     * **Expected AI Auto-Detect:** `Water Resources` • `High Severity` • `Actionable R&D: Yes`
+
+   * **📋 Demo Problem 10 (Jan Samvad Redirection Test Case - Municipal):**
      * **Title:** `Broken street light and single pothole on market road`
+     * **Hindi Title:** `बाजार की सड़क पर स्ट्रीट लाइट खराब और छोटा गड्ढा`
      * **Description:** `The municipal bulb near the vegetable market has stopped working for 2 days. Please send an electrician to replace the bulb.`
-     * **District:** `Hazaribagh` | **Block:** `Sadar` | **Village:** `Ward 7`
+     * **Hindi Description:** `सब्जी मंडी के पास नगर निगम का खंभा नंबर 4 की लाइट खराब हो गई है। कृपया लाइनमैन भेजकर ठीक कराएं।`
+     * **District:** `Hazaribagh` | **Block:** `Sadar` | **Village:** `Ward 7` | **Landmark:** `Near Daily Market`
      * **Expected AI Auto-Detect:** `Urban Development` • `Low Severity` • `Actionable R&D: False (Redirect to Jan Samvad)`
 
 5. Click **"Attach Photo Evidence"** to demonstrate the direct file picker and canvas EXIF stripper.
@@ -161,7 +205,7 @@ Here is the exact progression of a challenge moving across portals during the de
 2. Find the newly submitted problem in the **Incoming Challenges Verification Queue**.
 3. Click **"Validate & Assign HEI"**:
    * The challenge is validated as an authentic Academic R&D problem, and its status updates to **`Verified`**.
-4. *(Optional Jan Samvad Demo)*: For municipal issues (like Problem 6), click **"Jan Samvad"** to redirect routine complaints directly to the Jharkhand Jan Samvad portal (`https://jansamvad.jharkhand.gov.in`).
+4. *(Optional Jan Samvad Demo)*: For municipal issues (like Problem 10), click **"Jan Samvad"** to redirect routine complaints directly to the Jharkhand Jan Samvad portal (`https://jansamvad.jharkhand.gov.in`).
 
 ---
 
