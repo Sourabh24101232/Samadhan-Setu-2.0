@@ -71,35 +71,74 @@ To ensure all functionalities, AI auto-detection, and multi-portal databases wor
 
 ---
 
-## 🔄 End-to-End Inter-Authority Complaint Lifecycle & Status Flow
+## 🔄 End-to-End Inter-Authority Complaint Lifecycle & Flow Diagram
 
-Here is the exact progression of a challenge moving across portals during the demo:
+The complete journey of a crowdsourced challenge across all 4 stakeholders (Citizens, Government, Universities, Industry CSR) with the specific features active at each step:
 
+```mermaid
+flowchart TD
+    subgraph CITIZEN["🌾 STAGE 1: CITIZEN & PANCHAYAT REPORTING"]
+        C1["Citizen / Whistleblower Accesses Portal"] --> C2["Fill Problem Title & Description (Bilingual)"]
+        C2 --> C3["AI Live Auto-Classification Engine (Port 5005)"]
+        C3 --> C4["Optional: Live GPS Coordinates + Check on Map"]
+        C4 --> C5["Photo Upload with Client-Side EXIF Stripper"]
+        C5 --> C6["Submit Problem (Auth / Anon Passkey Generated)"]
+    end
+
+    C6 -->|"Status: 'Submitted'"| GOV_SCREEN
+
+    subgraph GOV["🏛️ STAGE 2: GOVERNMENT REVIEW & ALLOCATION"]
+        GOV_SCREEN{"R&D Innovation vs Routine Complaint?"}
+        GOV_SCREEN -->|"Routine Grievance (Left)"| JAN_SAMVAD["Handover to Official Jharkhand CM Jan Samvad Portal"]
+        GOV_SCREEN -->|"Actionable R&D (Center)"| HEI_ROUTE["Validate & Route to Recommended HEI (BIT Mesra / IIT ISM)"]
+        GOV_SCREEN -->|"Disaster SOS (Right)"| SOS_ALERT["Priority Fast-Track to DDMA Emergency Queue"]
+    end
+
+    HEI_ROUTE -->|"Status: 'Verified'"| UNIV_STAGE
+
+    subgraph UNIV["🎓 STAGE 3: UNIVERSITY INNOVATION (NEP 2020)"]
+        UNIV_STAGE["University R&D Portal (Port 5002)"] --> U1["14-Day Claim Expiry Lock (Anti-Hoarding)"]
+        U1 --> U2["Form Multidisciplinary Student Team + Faculty Mentor"]
+        U2 --> U3["Submit 3-Stage Milestone Proposal (30/40/30)"]
+        U3 --> U4["Declare Open Source / Social Good IP Ownership"]
+        U4 --> U5["Issue Institutional Endorsement Letter (Form NEP-2020-R&D)"]
+    end
+
+    U5 -->|"Status: 'Proposal Submitted'"| CSR_STAGE
+
+    subgraph CSR["🏢 STAGE 4: INDUSTRY CSR GRANT MARKETPLACE"]
+        CSR_STAGE["CSR Foundations Portal (Port 5003)"] --> I1["Discover Vetted Student R&D Proposals"]
+        I1 --> I2["Pledge Milestone CSR Grant (Sec 135 Compliant)"]
+        I2 --> I3["Issue Form CSR-1 Grant Award Letter & MoU"]
+        I3 --> I4["Disburse Tranche 1 with UTR Ledger Tracking"]
+        I4 --> I5["Direct Technical Mentorship Channel with Students"]
+    end
+
+    I5 -->|"Status: 'In Progress'"| FIELD_PILOT
+
+    subgraph PILOT["🚜 STAGE 5: FIELD PILOT, TESTING & RESOLUTION"]
+        FIELD_PILOT["Gov Review Desk (Port 5004)"] --> P1["Issue Official Government Order (G.O.) Pilot Sanction"]
+        P1 --> P2["Student Team Deploys Physical Prototype in Village"]
+        P2 --> P3["Ground Testing & Community Water / Soil Verification"]
+        P3 --> P4["Citizen / Panchayat Ground Verification (1-5★ Rating)"]
+        P4 --> P5["Issue Gram Panchayat Completion & Social Audit Certificate"]
+    end
+
+    P5 -->|"Status: 'Resolved' 🎉"| COMPLETED["Statewide 24-District Analytics & Heatmap Updated"]
 ```
-[1. Citizen Portal]  ──(Submits Challenge)──►  Status: 'Submitted'
-         │
-         ▼
-[2. Government Desk] ──(Validates R&D)──────►  Status: 'Verified'
-         │
-         ▼
-[3. University Hub]  ──(14-Day Claim Lock)──►  Status: 'Assigned to University'
-         │           ──(Submits Proposal)───►  Status: 'Proposal Submitted'
-         ▼
-[4. Industry CSR]    ──(Pledges CSR Grant)──►  Status: 'In Progress'
-         │           ──(Pilot Deployment)───►  Status: 'Testing'
-         ▼
-[5. Citizen Tracker] ──(5-Star Ground Sign)─►  Status: 'Resolved' 🎉
-```
 
-| Authority Portal | URL | Trigger Action | Database Status | Next Destination |
-| :--- | :--- | :--- | :--- | :--- |
-| **1. Citizen / Whistleblower** | `/citizen/submit` | Fills form + Clicks *"Submit Societal Challenge"* | `Submitted` | Visible on Gov Review Desk |
-| **2. Government Officer** | `/gov/verify` | Clicks *"Validate & Assign HEI"* | `Verified` | Open for University Teams |
-| **3. University Innovators** | `/university` | Clicks *"Claim Challenge (14-Day Lock)"* | `Assigned to University` | Form student team |
-| **3b. University Innovators** | `/university/proposals` | Fills 3-tranche budget + Clicks *"Submit Proposal"* | `Proposal Submitted` | Visible in CSR Pool |
-| **4. Corporate CSR Partner** | `/industry` | Clicks *"Pledge CSR Grant & Mentorship"* | `In Progress` | University begins R&D |
-| **4b. Gov Field Approval** | `/gov/verify` | Clicks *"Authorize Field Pilot Sanction"* | `Testing` | Ready for ground testing |
-| **5. Citizen Ground-Truth** | `/citizen/my-problems` | Enters passkey + Clicks *"Confirm Resolution (1-5★)"* | `Resolved` | 100% Completed |
+---
+
+### 📋 Complete Step-by-Step Feature Matrix & Authority Handover:
+
+| Stage & Stakeholder | Portal Route & Port | Trigger Action | Database Status | Key Active Features at this Step | Official Document Generated |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Stage 1: Citizen / Whistleblower** | `/citizen/submit`<br>*(Port 3000 $\rightarrow$ 5001)* | Fills form + Clicks *"Submit Societal Challenge"* | `Submitted` | • 🛡️ Zero IP/Phone logging (Whistleblower Protection)<br>• 📷 Client-side canvas EXIF metadata stripper<br>• 📍 Live GPS Coordinates + *"🗺️ Check on Map"*<br>• 🤖 Python FastAPI live domain & severity classifier<br>• 🔑 Anonymous Passkey generator (`ANON-JH-XXXXXX`) | Anonymous Tracking Passkey |
+| **Stage 2: Government Review Desk** | `/gov/verify`<br>*(Port 3000 $\rightarrow$ 5004)* | Clicks *"Validate & Assign HEI"* OR *"Jan Samvad"* | `Verified`<br>*(or `Rejected`)* | • 🚨 Disaster Emergency SOS Fast-Track Queue<br>• 🔬 AI R&D Feasibility Screener<br>• 🏛️ 1-Click Redirect to official `cm-jansamvad.jharkhand.gov.in`<br>• 🎓 Geospatial HEI Distance & Expertise Routing | Official Administrative Handover |
+| **Stage 3: University Innovation Team** | `/university`<br>`/university/proposals`<br>*(Port 3000 $\rightarrow$ 5002)* | Clicks *"Claim Challenge (14-Day Lock)"* $\rightarrow$ *"Submit Proposal"* | `Assigned to University`<br>$\rightarrow$ `Proposal Submitted` | • ⏳ 14-Day Anti-Hoarding Claim Expiry Lock<br>• 👥 Multidisciplinary Student Team Formulation<br>• 📋 3-Stage Milestone Budget Builder (30/40/30)<br>• 🌐 Open Source / Social Good IP Declaration<br>• 📤 Milestone Deliverable & Prototype Uploader | 📄 **Institutional R&D Endorsement Letter (Form NEP-2020-R&D)** with Dean Seal |
+| **Stage 4: Corporate CSR Foundation** | `/industry`<br>`/industry/collaborations`<br>*(Port 3000 $\rightarrow$ 5003)* | Clicks *"Pledge CSR Grant & Mentorship"* $\rightarrow$ *"Disburse Tranche"* | `In Progress` | • 🏢 CSR Proposal Discovery & Thematic Filtering<br>• 💰 Milestone-Linked Tranche Grants (Sec 135)<br>• 💳 Electronic Fund Transfer & UTR Ledger Record<br>• 💬 Direct Technical Mentorship Chat Channel | 📄 **Form CSR-1 Grant Award Letter & Section 135 MCA MoU** |
+| **Stage 5a: Government Field Clearance** | `/gov/verify`<br>*(Port 3000 $\rightarrow$ 5004)* | Clicks *"Authorize Field Pilot Sanction"* | `Testing` | • 📋 Formal Administrative Pilot Deployment Order<br>• 🏛️ District Collector & BDO Logistical Directives<br>• 🗺️ 24-District Real-Time Heatmap Sync | 📄 **Official Government Order (G.O.) Memo (`JH/DHTE/2026/SANCTION-XXXX`)** |
+| **Stage 5b: Citizen Ground Verification** | `/citizen/my-problems`<br>*(Port 3000 $\rightarrow$ 5001)* | Enters passkey + Clicks *"Confirm Resolution (1-5★)"* | `Resolved` 🎉 | • 🔑 Zero-login Anonymous Passkey Status Lookup<br>• ⏱️ Interactive 6-Stage Visual Timeline<br>• ⭐ Mandatory 1–5 Star Community Ground Sign-Off<br>• 📊 Statewide KPI & University Leaderboard Update | 📄 **Gram Panchayat Ground Completion & Social Audit Certificate** |
 
 ---
 
