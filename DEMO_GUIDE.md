@@ -142,6 +142,29 @@ flowchart TD
 
 ---
 
+## 📊 ⚡ Compact Lifecycle Flowchart (Optimized for PPT Presentation Slides)
+
+> **💡 Copy & Paste into PPT / Canva Slide:** This compact diagram summarizes the entire 5-stage Quadruple Helix lifecycle in a clean vertical (Top-to-Bottom) flow:
+
+```mermaid
+flowchart TD
+    C["🌾 <b>1. Citizen & Panchayat</b><br/>• Zero-IP Whistleblower & Live GPS<br/>• Python AI Auto-Classifier<br/><i>[Status: Submitted]</i>"]
+    -->|"Verified by AI"| G["🏛️ <b>2. Government Review Desk</b><br/>• R&D Innovation Screener<br/>• Redirects Civic Issues to Jan Samvad<br/><i>[Status: Verified]</i>"]
+    -->|"Assigned to HEI"| U["🎓 <b>3. University (NEP 2020)</b><br/>• 14-Day Anti-Hoarding Claim Lock<br/>• 3-Milestone Proposal (30/40/30)<br/><i>[Status: Proposal Submitted]</i>"]
+    -->|"Grant Sanctioned"| I["🏢 <b>4. Corporate CSR Marketplace</b><br/>• Section 135 MCA Grant & MoU<br/>• Tranche Disbursal with UTR Record<br/><i>[Status: In Progress]</i>"]
+    -->|"Gov Pilot Approval"| P["🚜 <b>5. Ground Pilot & Audit</b><br/>• Official G.O. Pilot Sanction<br/>• 1–5★ Panchayat Community Sign-Off<br/><i>[Status: Resolved 🎉]</i>"]
+    -->|"Real-Time Sync"| S["📊 <b>Statewide Impact & Analytics</b><br/>• 24-District Interactive GIS Map<br/>• University NEP Leaderboard"]
+```
+
+### 🎯 5-Bullet PPT Pitch Summary:
+1. **🌾 Grassroots Sourcing:** Rural citizens/whistleblowers report problems with zero IP logging, EXIF stripper, GPS check, & Python AI classification (`Submitted`).
+2. **🏛️ Government Screening:** State officers filter routine civic issues to **Jan Samvad** and assign high-impact R&D challenges to HEIs (`Verified`).
+3. **🎓 NEP 2020 Academic Hub:** Universities claim problems under a **14-day lock**, form multidisciplinary student teams, & submit 3-stage milestone proposals (`Proposal Submitted`).
+4. **🏢 Corporate CSR Marketplace:** Industry sponsors pledge **Section 135 grants**, disburse tranches with UTR tracking, & provide technical mentorship (`In Progress`).
+5. **🚜 Field Pilot & Citizen Sign-off:** Government sanctions deployment (`Testing`), students install solutions, & local Panchayats verify with a **1–5★ rating** (`Resolved`).
+
+---
+
 ## 🎬 5-Step Hackathon Demonstration Script
 
 ### 📍 Step 1: Citizen Experience & 🛡️ Whistleblower Protection
@@ -292,3 +315,5 @@ flowchart TD
 4. **Direct Industry Mentorship Channel:** Corporate R&D scientists mentor student engineering teams directly.
 5. **Mandatory Citizen Ground Verification:** 1–5 star community confirmation required before marking challenges solved.
 6. **24-District Interactive Heatmap:** Real-time geospatial monitoring across all 24 districts of Jharkhand.
+
+
